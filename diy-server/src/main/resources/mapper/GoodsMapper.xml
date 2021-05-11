@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.rwenjie.modules.sys.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="nuc.rwenjie.modules.sys.dataobject.GoodsDO">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="article_id" property="articleId" />
+        <result column="sub_title" property="subTitle" />
+        <result column="main_image" property="mainImage" />
+        <result column="images" property="images" />
+        <result column="express_template_id" property="expressTemplateId" />
+        <result column="status" property="status" />
+        <result column="packing_list" property="packingList" />
+        <result column="description" property="description" />
+        <result column="afterService" property="afterService" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="pay_method" property="payMethod" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, article_id, sub_title, main_image, images, express_template_id, status, packing_list, description, afterService, create_time, update_time, pay_method
+    </sql>
+
+</mapper>

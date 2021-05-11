@@ -1,0 +1,105 @@
+server:
+  port: 8088
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/diy_shop?useSSL=FALSE&serverTimezone=UTC
+    username: root
+    password: root
+    hikari:
+      # 连接池名
+      pool-name: DateHikariCP
+      # 最小空闲连接数
+      minimum-idle: 5
+      # 空闲连接存货最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 最大连接数
+      maximum-pool-size: 10
+      # 从连接池返回的连接的自动提交
+      auto-commit: true
+      # 连接最大存活时间, 0表示永久存活, 默认1800000 （30分钟）
+      max-lifetime: 1800000
+      # 连接超时时间, 默认30000 （30秒）
+      connection-timeout: 30000
+      # 测试连接是否可用的查询语句
+      connection-test-query: SELECT 1
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器地址
+    host: 127.0.0.1
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password:
+    # 连接超时时间（毫秒）
+    timeout: 1000
+    pool:
+      jedis:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 200
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+
+
+# mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: nuc.rwenjie.modules.sys.pojo
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: true
+
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# mybatis SQL 打印配置
+# 方法接口所在包，不是Mapper.xml所在包
+logging:
+  level:
+    com.rwenjie.server.mapper: dubug
+
+jwt:
+  # JWT 存储请求头
+  tokenHeader: Authorization
+  # JWT 加密使用的秘钥
+  secret: diy-secret
+  # JWT的超时时间（60*60*24）
+  expiration: 604800
+  # JWT 负载中拿到的开头
+  tokenHead: Bearer
+
+rwenjie:
+  # druid 账号密码
+  druid:
+    password: rwenjie
+
+# 阿里云短信验证账号信息
+SMS:
+  accessKeyId: LTAI5tB9naFXtXDAv9sSy9HC #访问阿里云API的验证
+  accessKeySecret: jSGTyz7zPGtLcR4Yy7ySNw4kVAXDOI #访问阿里云API的验证
+  product: Dysmsapi #阿里云云通信短信
+  domain: dysmsapi.aliyuncs.com #产品域名
+  signName: RwenjieBlog #签名
+  templateLoginCode: SMS_195220129 #用户登录模板
+  templateRegiCode: SMS_195195211 #用户注册模板
+  templateForgotPwdCode: SMS_195260200 #用户注册模板
+#阿里云OSS
+oss:
+  accessKeyId: LTAI4GF8DpWaXyfAPTBPR7Hn #访问阿里云API的验证
+  accessKeySecret: YLoI0kSx5QqmDiRmCzLtLbGKmh6WBY #访问阿里云API的验证
+  endpoint: https://oss-cn-hangzhou.aliyuncs.com
+  bucketName: rwenjie-blog
+
+#快递100的基础账号信息
+express:
+  key: ebRGSfAo113
+  customer: 2DED440F44C5BE4DDE050CF6987C0702
+  secret: fbdf4a4cb8db4b4693caac2fbcd8d626
+  userid: c9b63c96265c4a5bb603792f099af0a0
+
