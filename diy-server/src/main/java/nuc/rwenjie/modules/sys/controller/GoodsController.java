@@ -56,12 +56,20 @@ public class GoodsController {
 
     @ApiOperation("删除商品")
     @GetMapping("/delete")
-    public RespBean deleteGoods(String gid) {
-        Integer row = goodsService.deleteGoods(gid);
+    public RespBean changeStatus(String gid, Integer status) {
+        Integer row = goodsService.changeStatus(gid, status);
         if (row == 1) {
-            return RespBean.success("删除成功");
+            return RespBean.success("操作成功");
         }
 
-        return RespBean.error("删除失败") ;
+        return RespBean.error("操作失败") ;
     }
+
+    @ApiOperation("查询所有商品")
+    @GetMapping("/listing")
+    public RespBean getAllGoods() {
+        return RespBean.success(goodsService.selectAll()) ;
+    }
+
+
 }

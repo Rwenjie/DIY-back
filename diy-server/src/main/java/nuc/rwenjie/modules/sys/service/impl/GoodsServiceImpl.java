@@ -2,12 +2,8 @@ package nuc.rwenjie.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import nuc.rwenjie.common.utils.RespBean;
-import nuc.rwenjie.common.utils.SpringBeanFactoryUtils;
 import nuc.rwenjie.common.utils.Time;
-import nuc.rwenjie.modules.sys.controller.vo.PayMethod;
 import nuc.rwenjie.modules.sys.dataobject.GoodsDO;
 import nuc.rwenjie.modules.sys.dataobject.SkuDO;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
@@ -17,7 +13,6 @@ import nuc.rwenjie.modules.sys.service.IGoodsService;
 import nuc.rwenjie.modules.sys.service.ISkuService;
 import nuc.rwenjie.modules.sys.service.model.GoodsModel;
 import nuc.rwenjie.modules.sys.service.model.SkuModel;
-import org.codehaus.jettison.json.JSONArray;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,6 +120,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
             goodsModel.setArticle(articleMapper.getArticleModelById(goodsDO.getArticleId()));
             goodsModelList.add(goodsModel);
         }
+        System.out.println(goodsModelList);
         return goodsModelList;
     }
 
@@ -134,12 +130,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
      * @return java.lang.Integer
      **/
     @Override
-    public Integer deleteGoods(String gid) {
+    public Integer changeStatus(String gid, Integer status) {
         GoodsDO goodsDO = goodsMapper.selectById(gid);
         if (goodsDO==null){
             return null;
         }
-        goodsDO.setStatus(-1);
+        goodsDO.setStatus(status);
         return goodsMapper.updateById(goodsDO);
     }
 

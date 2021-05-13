@@ -42,5 +42,5 @@ public interface IGoodsService extends IService<GoodsDO> {
     * 逻辑删除商品
     * @return java.lang.Integer
     **/
-    Integer deleteGoods(String gid);
+    Integer changeStatus(String gid, Integer status);
 }

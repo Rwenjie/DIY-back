@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>renren-fast</module>
+        <module>back-stage</module>
         <module>renren-generator</module>
         <module>diy-server</module>
     </modules>
