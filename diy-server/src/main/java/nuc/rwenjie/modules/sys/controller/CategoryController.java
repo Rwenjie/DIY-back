@@ -20,6 +20,7 @@ import java.awt.color.CMMException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
 
@@ -42,7 +43,7 @@ public class CategoryController extends BaseController {
     @GetMapping("/listing")
     public RespBean selectAll() {
         List<CategoryModel> categoryModelList = categoryService.selectAll();
-        return RespBean.success("获取成功", categoryModelList);
+        return RespBean.success(204, "获取成功", categoryModelList);
     }
     private void findSubCategory(List<CategoryVO> categoryVOList, List<CategoryModel> categoryModelList) {
         for (CategoryVO categoryVO : categoryVOList) {
@@ -62,6 +63,14 @@ public class CategoryController extends BaseController {
             }
         }
     }
+
+    @ApiOperation(value = "获得分类信息")
+    @GetMapping("/cid")
+    private RespBean getAllCategoryByLeaf(Long cid) {
+        List<Map<String, Object> > cs = categoryService.getAllCategoryByLeaf(cid);
+        return RespBean.success(204, cs);
+    }
+
     private CategoryVO convertFromVO(CategoryModel categoryModel) {
 
         if (categoryModel == null) {

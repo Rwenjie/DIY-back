@@ -43,4 +43,25 @@ public interface IGoodsService extends IService<GoodsDO> {
     * @return java.lang.Integer
     **/
     Integer changeStatus(String gid, Integer status);
+
+    /**
+     * 根据商品的id查询商品
+     * @Param: gid
+     * @return nuc.rwenjie.modules.sys.service.model.GoodsModel
+     **/
+
+    GoodsModel getGoodsById(String gid);
+    /**
+     * 更新商品的点赞数量
+     * @Param: gid
+     * @return int
+     **/
+    int updateGoodsStar(String gid);
+
+    /**
+     * 根据文章查询商品
+     * @Param: aid
+     * @return nuc.rwenjie.modules.sys.service.model.GoodsModel
+     **/
+    GoodsModel getItemByArticle(String aid);
 }

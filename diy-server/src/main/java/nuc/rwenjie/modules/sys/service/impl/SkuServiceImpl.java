@@ -14,6 +14,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,6 +59,9 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDO> implements ISk
         List<SkuDO> skuDOList = skuMapper.selectList(new QueryWrapper<SkuDO>().eq("goods_id", gId));
         for (SkuDO skuDO : skuDOList) {
             SkuModel skuModel = convertFromModel(skuDO);
+            String[] indexes = skuDO.getIndexes().split("_");
+            int[] array = Arrays.asList(indexes).stream().mapToInt(Integer::parseInt).toArray();
+            skuModel.setIndexes(array);
             skuModelList.add(skuModel);
         }
         return skuModelList;

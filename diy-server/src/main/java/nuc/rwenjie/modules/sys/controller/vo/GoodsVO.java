@@ -39,13 +39,19 @@ public class GoodsVO implements Serializable{
 
     private String afterService;
 
+    private Integer soldCount;
+
+    private Integer star;
+
     private List<PayMethod> payMethod;
 
     private List<SkuModel> skus;
 
     private Integer status;
 
-    private String images;
+    private List<String> images;
+
+    private String spec;
 
     private String mainImage;
 

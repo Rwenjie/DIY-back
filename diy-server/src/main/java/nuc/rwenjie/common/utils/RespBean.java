@@ -25,8 +25,14 @@ public class RespBean {
      * @Param: obj
      * @return com.rwenjie.server.pojo.RespBean
      **/
+    public static RespBean success(Integer code, String message, Object data) {
+        return new RespBean(code, message, data);
+    }
     public static RespBean success(String message, Object data) {
         return new RespBean(200, message, data);
+    }
+    public static RespBean success(Integer code, Object data) {
+        return new RespBean(code, "", data);
     }
 
     public static RespBean success(String message) {
@@ -35,6 +41,7 @@ public class RespBean {
     public static RespBean success(Object data) {
         return new RespBean(200, "请求成功", data);
     }
+
 
 
     /**
@@ -64,6 +71,9 @@ public class RespBean {
      **/
     public static RespBean error(int code, String message) {
         return new RespBean(code, message, null);
+    }
+    public static RespBean error(int code, String message, Object data) {
+        return new RespBean(code, message, data);
     }
 
 }

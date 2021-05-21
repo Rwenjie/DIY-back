@@ -17,7 +17,7 @@ public class CategoryVO {
 
     private Integer id;
 
-    private Integer value;
+    private Long value;
 
     private String label;
 

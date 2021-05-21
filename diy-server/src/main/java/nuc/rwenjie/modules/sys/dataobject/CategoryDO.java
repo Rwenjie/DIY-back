@@ -31,9 +31,9 @@ public class CategoryDO implements Serializable {
 
     @ApiModelProperty(value = "id")
     @TableId("id")
-    private Integer id;
+    private Long id;
 
-    private Integer parentId;
+    private Long parentId;
 
     private String name;
 

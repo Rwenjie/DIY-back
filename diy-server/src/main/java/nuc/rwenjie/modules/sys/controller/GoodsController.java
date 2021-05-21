@@ -11,6 +11,7 @@ import nuc.rwenjie.modules.sys.service.model.SkuModel;
 import nuc.rwenjie.modules.sys.service.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public class GoodsController {
         return RespBean.success(goodsService.selectAll()) ;
     }
 
+
     @ApiOperation("删除商品")
     @GetMapping("/delete")
     public RespBean changeStatus(String gid, Integer status) {
@@ -70,6 +72,24 @@ public class GoodsController {
     public RespBean getAllGoods() {
         return RespBean.success(goodsService.selectAll()) ;
     }
+
+    @Transactional
+    @ApiOperation("根据文章查询商品")
+    @GetMapping("/aid")
+    public RespBean getItemByArticle(String aid) {
+
+        System.out.println("aid=====>"+aid);
+       GoodsModel goodsModel = goodsService.getItemByArticle(aid);
+       if (goodsModel!=null) {
+           return RespBean.success(201, goodsModel);
+       }
+        return RespBean.error(410, "操作失败");
+    }
+
+
+
+
+
 
 
 }

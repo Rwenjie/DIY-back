@@ -71,7 +71,6 @@ public class SysMenuController extends AbstractController {
 	public R select(){
 		//查询列表数据
 		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
-		
 		//添加顶级菜单
 		SysMenuEntity root = new SysMenuEntity();
 		root.setMenuId(0L);

@@ -1,18 +1,16 @@
 package nuc.rwenjie.modules.sys.mapper;
 
-import nuc.rwenjie.modules.sys.service.model.ArticleModel;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import nuc.rwenjie.modules.sys.entity.ArticleEntity;
 
 /**
- * @Author Rwenjie
- * @ClassName ArticleMapper
- * @Description TODO 查询文章相关
- * @Date 2021/5/11 19:49
- **/
+ * <p>
+ *  Mapper 接口
+ * </p>
+ *
+ * @author Rwenjie
+ * @since 2021-05-18
+ */
+public interface ArticleMapper extends BaseMapper<ArticleEntity> {
 
-
-@Mapper
-public interface ArticleMapper {
-
-   ArticleModel getArticleModelById(String id);
 }

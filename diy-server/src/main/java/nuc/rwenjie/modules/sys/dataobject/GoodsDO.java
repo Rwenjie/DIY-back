@@ -42,23 +42,32 @@ public class GoodsDO implements Serializable {
 
     private String subTitle;
 
-    private String images;
-
-    private Long expressTemplateId;
-
-    private Integer status;
-
     private String packingList;
 
     private String description;
+
+    private String spec;
 
     private String afterService;
 
     private String payMethod;
 
+    private String fromAddr;
+
+    private String images;
+
+    private String video;
+
+    private Integer status;
+
+    private Integer soldCount;
+
+    private Integer star;
+
     private String createTime;
 
     private String updateTime;
+
 
 }
 

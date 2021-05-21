@@ -21,7 +21,6 @@ import java.util.Date;
 public class DIYApp {
     public static void main(String[] args) {
 
-        //测试 git GitHub
         SpringApplication.run(DIYApp.class, args);
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");

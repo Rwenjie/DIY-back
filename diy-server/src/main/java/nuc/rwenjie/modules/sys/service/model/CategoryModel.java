@@ -32,10 +32,10 @@ public class CategoryModel implements Serializable {
 
     @ApiModelProperty(value = "id")
     @TableId("id")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "父目录id")
-    private Integer parentId;
+    private Long parentId;
 
     @ApiModelProperty(value = "分类名称")
     private String name;
@@ -56,6 +56,6 @@ public class CategoryModel implements Serializable {
 
     private List<CategoryModel> children;
 
-    private Integer value;
+    private Long value;
     private String label;
 }

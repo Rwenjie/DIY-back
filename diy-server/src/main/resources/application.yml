@@ -1,6 +1,5 @@
 server:
   port: 8088
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,6 +23,10 @@ spring:
       connection-timeout: 30000
       # 测试连接是否可用的查询语句
       connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
   redis:
     # Redis数据库索引（默认为0）
     database: 0
@@ -81,8 +84,8 @@ rwenjie:
 
 # 阿里云短信验证账号信息
 SMS:
-  accessKeyId: LTAI5tB9naFXtXDAv9sSy9HC #访问阿里云API的验证
-  accessKeySecret: jSGTyz7zPGtLcR4Yy7ySNw4kVAXDOI #访问阿里云API的验证
+  accessKeyId: LTAI5tLif7W8mDXahA7mzpdP #访问阿里云API的验证
+  accessKeySecret: 5mwH21SXwsQQ48jJcMnnS498KnmvRv #访问阿里云API的验证
   product: Dysmsapi #阿里云云通信短信
   domain: dysmsapi.aliyuncs.com #产品域名
   signName: RwenjieBlog #签名
@@ -91,10 +94,12 @@ SMS:
   templateForgotPwdCode: SMS_195260200 #用户注册模板
 #阿里云OSS
 oss:
-  accessKeyId: LTAI4GF8DpWaXyfAPTBPR7Hn #访问阿里云API的验证
-  accessKeySecret: YLoI0kSx5QqmDiRmCzLtLbGKmh6WBY #访问阿里云API的验证
+  accessKeyId: LTAI5tLif7W8mDXahA7mzpdP #访问阿里云API的验证
+  accessKeySecret: 5mwH21SXwsQQ48jJcMnnS498KnmvRv #访问阿里云API的验证
   endpoint: https://oss-cn-hangzhou.aliyuncs.com
   bucketName: rwenjie-blog
+
+
 
 #快递100的基础账号信息
 express:

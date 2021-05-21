@@ -52,6 +52,8 @@ public class SkuModel implements Serializable {
     @ApiModelProperty(value = "是否有效，0无效，1有效")
     private Integer enable;
 
+    private int[] indexes;
+
     @ApiModelProperty(value = "选项")
     private List<String> options;
 

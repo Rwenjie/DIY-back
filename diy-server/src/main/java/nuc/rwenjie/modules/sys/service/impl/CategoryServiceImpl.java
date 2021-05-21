@@ -9,9 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
 
@@ -53,6 +51,41 @@ public class CategoryServiceImpl implements CategoryService {
         findSubCategory(categoryModelList, categories);
 
         return categoryModelList;
+    }
+
+    /**
+     * 根据id查询分类信息
+     *
+     * @param categoryId
+     * @return nuc.rwenjie.modules.sys.service.model.CategoryModel
+     * @Param: categoryId
+     */
+    @Override
+    public CategoryModel getCategoryById(Long categoryId) {
+        System.out.println(categoryId);
+        CategoryDO categoryDO = categoryMapper.selectByPrimaryKey(categoryId);
+        return convertFromDataObject(categoryDO);
+    }
+
+    /**
+     * 根据叶子节点的分类获得
+     *
+     * @param cid
+     * @return java.util.Map<java.lang.Long, java.lang.String>
+     * @Param: cid
+     */
+    @Override
+    public List<Map<String, Object> > getAllCategoryByLeaf(Long cid) {
+        List<Map<String, Object> > categoryList = new ArrayList<>();
+        while(cid!=0){
+            CategoryDO category = categoryMapper.selectByPrimaryKey(cid);
+            Map<String, Object> cmap = new HashMap<>();
+            cmap.put("value", category.getId());
+            cmap.put("label", category.getName());
+            categoryList.add(cmap);
+            cid = category.getParentId();
+        }
+        return categoryList;
     }
 
 

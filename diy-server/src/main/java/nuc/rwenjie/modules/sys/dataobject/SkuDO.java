@@ -44,6 +44,8 @@ public class SkuDO implements Serializable {
 
     private Integer enable;
 
+    private String indexes;
+
     private String createTime;
 
     private String updateTime;

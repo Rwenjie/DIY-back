@@ -20,7 +20,7 @@ public interface CategoryMapper {
 
     int insertSelective(CategoryDO record);
 
-    CategoryDO selectByPrimaryKey(Integer id);
+    CategoryDO selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(CategoryDO record);
 

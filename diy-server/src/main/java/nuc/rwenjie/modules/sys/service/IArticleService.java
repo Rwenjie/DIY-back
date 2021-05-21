@@ -1,24 +1,37 @@
 package nuc.rwenjie.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import nuc.rwenjie.modules.sys.dataobject.GoodsDO;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
-import nuc.rwenjie.modules.sys.service.model.ArticleModel;
+
+import java.util.List;
 
 /**
- * @Author Rwenjie
- * @ClassName IArticleService
- * @Description TODO 文章
- * @Date 2021/5/11 19:43
- **/
-
-
-public interface IArticleService {
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author Rwenjie
+ * @since 2021-05-18
+ */
+public interface IArticleService extends IService<ArticleEntity> {
 
     /**
-     * GoodsModel 需要的文章信息
-     * @return nuc.rwenjie.modules.sys.service.model.ArticleModel
+     * 查询所有文章
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.Article>
      **/
-    ArticleModel getArticleModelById(String id);
+    List<ArticleEntity> getAllArticle();
 
+    /**
+     * ge
+     * @Param: id
+     * @return nuc.rwenjie.modules.sys.entity.ArticleEntity
+     **/
+    ArticleEntity getArticleById(String id);
+
+
+    /**
+     * 更新Article文章的点赞总数
+     * @return int
+     **/
+    int updateArticleStar(String aid);
 }
