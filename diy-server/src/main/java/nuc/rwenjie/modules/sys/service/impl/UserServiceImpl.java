@@ -3,6 +3,7 @@ package nuc.rwenjie.modules.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import io.rong.models.User;
 import nuc.rwenjie.common.config.jwt.JwtTokenUtil;
 import nuc.rwenjie.common.config.security.DefaultUserDetailsService;
 import nuc.rwenjie.common.error.BusinessException;
@@ -55,7 +56,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      */
     @Override
     public UserEntity getUserByUsername(String username) throws BusinessException {
-
         UserEntity userDo = userMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobile", username));
         if (userDo == null) {
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
@@ -72,11 +72,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     public UserEntity getUserByMobile(String mobile) throws BusinessException {
 
-        UserEntity userDo = userMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobile", mobile));
-        if (userDo == null) {
+        System.out.println("mobile===>"+mobile);
+        //UserEntity userEntity = new UserEntity();
+        //System.out.println(userMapper.selectUserByMobile(mobile));
+        UserEntity userEntity = userMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobile", mobile));
+        if (userEntity == null) {
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
-        return userDo;
+        return userEntity;
     }
 
     /**

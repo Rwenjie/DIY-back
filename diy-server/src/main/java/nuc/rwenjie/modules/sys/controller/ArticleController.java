@@ -5,13 +5,17 @@ import io.swagger.annotations.ApiOperation;
 import nuc.rwenjie.common.utils.RespBean;
 import nuc.rwenjie.modules.sys.controller.vo.ArticleVO;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.service.CategoryService;
 import nuc.rwenjie.modules.sys.service.IArticleService;
+import nuc.rwenjie.modules.sys.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.SeparatorUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +68,30 @@ public class ArticleController {
 
     @ApiOperation(value = "发布新的文章")
     @PostMapping("/submit")
-    public RespBean submitArticle(@RequestBody ArticleEntity articleEntity) {
-
-        s
-        return RespBean.success();
+    public RespBean submitArticle(@RequestBody ArticleEntity articleEntity,  Authentication authentication) {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        if (userModel==null) {
+            return RespBean.error("请进行登录");
+        }
+        articleEntity.setUserId(userModel.getUserId());
+        int row = articleService.submitArticle(articleEntity);
+        if (row ==1 ){
+            return RespBean.success("发布成功");
+        }
+        else {
+            return RespBean.error("发布失败");
+        }
     }
 
+    @ApiOperation(value = "根据用户查询文章")
+    @GetMapping("/uid")
+    public RespBean getArticleByUser(Authentication authentication) {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        if (userModel==null) {
+            return RespBean.error("请进行登录");
+        }
+       List<ArticleEntity> articles = articleService.getArticleByUser(userModel);
+        System.out.println(articles);
+        return RespBean.success(articles);
+    }
 }

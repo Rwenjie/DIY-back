@@ -19,4 +19,5 @@ public interface AsyncService {
      * 存入数据库中用户名
      */
     void insUsername();
+
 }

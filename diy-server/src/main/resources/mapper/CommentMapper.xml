@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.rwenjie.modules.sys.mapper.CommentMapper">
+
+    <!--查询当前文章的首条评论-->
+    <!--文章id  父评论id为空 查询结果  结果赋值到reviewer中-->
+    <select id="selCommentReviewer" parameterType="String" resultMap="CommentMap">
+        SELECT mc.*,mu.username as reviewer_nick,mu.avatar as reviewer_avatar FROM `tb_comment` AS mc,`sys_user` AS mu WHERE mc.user_id = mu.user_id AND mc.article_id = #{articleId} AND ISNULL(mc.parent_id) AND mc.state = 0 ORDER BY mc.comment_time DESC
+    </select>
+
+
+    <!--查询当前文章评论下的子评论-->
+    <select id="selCommentReply" resultMap="CommentMap">
+        SELECT mc.*, mu.username as reviewer_nick,mu.avatar as revierer_avatar,(
+	  	  SELECT mup.username FROM `tb_comment` AS mcp,`sys_user` AS mup
+	      WHERE mcp.user_id = mup.user_id AND mcp.id = mc.parent_id ) AS reply_nick
+        FROM `tb_comment` AS mc,`sys_user` AS mu
+	    WHERE mc.user_id = mu.user_id AND mc.article_id =#{articleId} AND mc.parent_id = #{parentId} AND mc.state = 0 ORDER BY mc.comment_time ASC
+    </select>
+
+
+    <!--插入评论-->
+    <!--从reviewerUser中提取评论人信息-->
+    <insert id="insComment" parameterType="nuc.rwenjie.modules.sys.entity.CommentEntity">
+        INSERT INTO `tb_comment` VALUES (#{id},#{content},#{commentTime},#{likeCounts},0,#{reviewerUser.userId},#{articleId},#{parentId})
+    </insert>
+
+
+    <!--                     文章评论结果返回集                    -->
+    <resultMap id="CommentMap" type="nuc.rwenjie.modules.sys.entity.CommentEntity">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="commentTime" column="comment_time"/>
+        <result property="likeCounts" column="like_counts"/>
+        <result property="state" column="state"/>
+        <result property="articleId" column="article_id"/>
+        <result property="parentId" column="parent_id"/>
+        <association property="reviewerUser" javaType="nuc.rwenjie.modules.sys.entity.UserEntity">
+            <id property="userId" column="user_id"/>
+            <result property="username" column="reviewer_nick"/>
+            <result property="avatar" column="reviewer_avatar"/>
+        </association>
+        <association property="replyUser" javaType="nuc.rwenjie.modules.sys.entity.UserEntity">
+            <result property="username" column="reply_nick"/>
+        </association>
+    </resultMap>
+</mapper>

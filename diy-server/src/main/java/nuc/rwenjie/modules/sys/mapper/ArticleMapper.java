@@ -2,6 +2,7 @@ package nuc.rwenjie.modules.sys.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.service.model.ArticleModel;
 
 /**
  * <p>

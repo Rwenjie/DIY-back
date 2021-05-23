@@ -1,5 +1,7 @@
 package nuc.rwenjie.modules.sys.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import nuc.rwenjie.modules.sys.dataobject.CategoryDO;
 import nuc.rwenjie.modules.sys.service.model.CategoryModel;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.Map;
  **/
 
 
-public interface CategoryService {
+public interface CategoryService extends IService<CategoryModel> {
 
     /**
      * 递归查所有分级的目录
@@ -35,4 +37,6 @@ public interface CategoryService {
      * @return java.util.Map<java.lang.Long,java.lang.String>
      **/
     List<Map<String, Object> > getAllCategoryByLeaf(Long cid);
+
+    List<CategoryDO> getAllCategory();
 }

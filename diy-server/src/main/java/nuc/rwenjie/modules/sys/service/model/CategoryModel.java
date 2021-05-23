@@ -22,7 +22,7 @@ import java.util.List;
  **/
 
 @Data
-@TableName(value = "category")
+@TableName(value = "tb_category")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value = "CategoryModel", description = "商品分类")

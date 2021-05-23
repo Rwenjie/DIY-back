@@ -2,6 +2,7 @@ package nuc.rwenjie.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 
 import java.util.List;
 
@@ -34,4 +35,18 @@ public interface IArticleService extends IService<ArticleEntity> {
      * @return int
      **/
     int updateArticleStar(String aid);
+
+
+    /**
+     * 插入文章
+     * @return
+     **/
+    int submitArticle(ArticleEntity articleEntity);
+
+    /**
+     * 根据用户查询文章
+     * @Param: userModel
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
+     **/
+    List<ArticleEntity> getArticleByUser(UserEntity userModel);
 }

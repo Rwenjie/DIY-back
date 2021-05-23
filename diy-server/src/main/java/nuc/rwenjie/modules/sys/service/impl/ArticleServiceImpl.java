@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
 import nuc.rwenjie.modules.sys.service.IArticleService;
 import nuc.rwenjie.modules.sys.service.IArticleStarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,5 +73,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
         return 0;
     }
 
+    /**
+     * 插入文章
+     *
+     * @param articleEntity
+     * @return
+     */
+    @Override
+    public int submitArticle(ArticleEntity articleEntity) {
+        articleEntity.setCreateTime(new Date());
+        articleEntity.setUpdateTime(new Date());
+        return articleMapper.insert(articleEntity);
+    }
 
+    /**
+     * 根据用户查询文章
+     *
+     * @param userModel
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
+     * @Param: userModel
+     */
+    @Override
+    public List<ArticleEntity> getArticleByUser(UserEntity userModel) {
+        return articleMapper.selectList(new QueryWrapper<ArticleEntity>().eq("user_id", userModel.getUserId()));
+    }
 }

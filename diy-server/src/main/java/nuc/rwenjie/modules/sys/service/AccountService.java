@@ -1,7 +1,10 @@
 package nuc.rwenjie.modules.sys.service;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import nuc.rwenjie.common.error.BusinessException;
 import nuc.rwenjie.common.utils.RespBean;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 
 /**
  * @Author Rwenjie
@@ -11,7 +14,7 @@ import nuc.rwenjie.common.utils.RespBean;
  **/
 
 
-public interface AccountService {
+public interface AccountService extends IService<UserEntity> {
 
     /**
      * 验证密码是否正确

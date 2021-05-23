@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  **/
 
 @Service
-public class AccountServiceImpl  extends ServiceImpl<UserMapper, UserEntity> implements AccountService{
+public class AccountServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements AccountService{
 
     @Autowired
     UserMapper userMapper;

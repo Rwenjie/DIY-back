@@ -31,6 +31,9 @@ public class ArticleEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @ApiModelProperty(value = "用户")
+    private String userId;
+
     @ApiModelProperty(value = "标题")
     private String title;
 
@@ -41,7 +44,7 @@ public class ArticleEntity implements Serializable {
     private Long categoryId;
 
     @ApiModelProperty(value = "文章分类")
-    private Long[] subCategory;
+    private String subCategory;
 
     @ApiModelProperty(value = "首页图片")
     private String image;
@@ -57,6 +60,12 @@ public class ArticleEntity implements Serializable {
 
     @ApiModelProperty(value = "摘要")
     private String brief;
+
+    @ApiModelProperty(value = "是否有商品出售，0无 1有")
+    private Integer sell;
+
+    @ApiModelProperty(value = "文章状态 1公布，2审核中，3草稿")
+    private Integer state;
 
     private Date createTime;
 

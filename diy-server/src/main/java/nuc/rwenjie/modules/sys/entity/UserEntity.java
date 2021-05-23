@@ -74,6 +74,8 @@ public class UserEntity implements Serializable, UserDetails {
 	 */
 	private Integer status;
 
+	private String avatar;
+
 	/**
 	 * 角色ID列表
 	 */

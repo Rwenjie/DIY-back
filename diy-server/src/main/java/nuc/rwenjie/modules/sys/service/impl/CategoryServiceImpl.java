@@ -1,6 +1,6 @@
 package nuc.rwenjie.modules.sys.service.impl;
 
-import nuc.rwenjie.common.utils.SpringBeanFactoryUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import nuc.rwenjie.modules.sys.dataobject.CategoryDO;
 import nuc.rwenjie.modules.sys.mapper.CategoryMapper;
 import nuc.rwenjie.modules.sys.service.CategoryService;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
-
 /**
  * @Author Rwenjie
  * @ClassName CategoryServiceImpl
@@ -21,7 +19,7 @@ import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
  **/
 
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryModel> implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -32,11 +30,13 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<CategoryModel> categoryModelList = new ArrayList<>();
 
+
         List<CategoryDO> categories = categoryMapper.selectAll();
 
+        System.out.println("categories+==========================+++++++"+categories);
         //查出parent_id=0
         for (CategoryDO category : categories) {
-            if (category.getParentId().equals(ROOT_PARENT_ID)) {
+            if (category.getParentId() == 0) {
                 CategoryModel categoryModel = new CategoryModel();
                 BeanUtils.copyProperties(category, categoryModel);
                 categoryModel.setValue(category.getId());
@@ -86,6 +86,11 @@ public class CategoryServiceImpl implements CategoryService {
             cid = category.getParentId();
         }
         return categoryList;
+    }
+
+    @Override
+    public List<CategoryDO> getAllCategory() {
+        return categoryMapper.selectAll();
     }
 
 

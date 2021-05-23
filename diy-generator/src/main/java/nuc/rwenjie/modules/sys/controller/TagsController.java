@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 地址区域表 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-20
+ * @since 2021-05-22
  */
 @RestController
-@RequestMapping("//area")
-public class AreaController {
+@RequestMapping("//tags")
+public class TagsController {
 
 }

@@ -1,6 +1,8 @@
 package nuc.rwenjie.modules.sys.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import nuc.rwenjie.modules.sys.dataobject.CategoryDO;
+import nuc.rwenjie.modules.sys.service.model.CategoryModel;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  **/
 
 
-public interface CategoryMapper {
+public interface CategoryMapper extends BaseMapper<CategoryModel> {
 
     int deleteByPrimaryKey(Integer id);
 
@@ -27,4 +29,5 @@ public interface CategoryMapper {
     int updateByPrimaryKey(CategoryDO record);
 
     List<CategoryDO> selectAll();
+
 }

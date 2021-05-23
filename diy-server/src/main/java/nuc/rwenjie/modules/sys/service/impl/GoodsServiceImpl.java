@@ -8,6 +8,7 @@ import nuc.rwenjie.common.utils.Time;
 import nuc.rwenjie.modules.sys.dataobject.GoodsDO;
 import nuc.rwenjie.modules.sys.dataobject.SkuDO;
 import nuc.rwenjie.modules.sys.entity.AddressEntity;
+import nuc.rwenjie.modules.sys.entity.ArticleEntity;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
 import nuc.rwenjie.modules.sys.mapper.GoodsMapper;
 import nuc.rwenjie.modules.sys.mapper.SkuMapper;
@@ -114,8 +115,13 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         for (GoodsDO goodsDO : goodsDOList) {
             GoodsModel goodsModel = convertFromModel(goodsDO);
             goodsModel.setSkus(skuService.selectModelsByGoodId(goodsDO.getId()));
-     /*       System.out.println("Article==============>"+articleMapper.getArticleModelById(goodsDO.getArticleId()));
-            goodsModel.setArticle(articleMapper.getArticleModelById(goodsDO.getArticleId()));*/
+
+            ArticleEntity articleEntity = articleMapper.selectById(goodsDO.getArticleId());
+            ArticleModel articleModel = new ArticleModel();
+            articleModel.setId(articleEntity.getId().toString());
+            articleModel.setLabel(articleEntity.getTitle());
+            goodsModel.setArticle(articleModel);
+
             goodsModelList.add(goodsModel);
         }
         return goodsModelList;
@@ -133,7 +139,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         for (GoodsDO goodsDO : goodsDOList) {
             GoodsModel goodsModel = convertFromModel(goodsDO);
             goodsModel.setSkus(skuService.selectModelsByGoodId(goodsDO.getId()));
-         /*   goodsModel.setArticle(articleMapper.getArticleModelById(goodsDO.getArticleId()));*/
+            ArticleEntity articleEntity = articleMapper.selectById(goodsDO.getArticleId());
+            ArticleModel articleModel = new ArticleModel();
+            articleModel.setId(articleEntity.getId().toString());
+            articleModel.setLabel(articleEntity.getTitle());
+            goodsModel.setArticle(articleModel);
             goodsModelList.add(goodsModel);
         }
         System.out.println(goodsModelList);
@@ -212,7 +222,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         if (goodsDO!=null) {
             goodsModel = convertFromModel(goodsDO);
 
-            List<SkuModel> skus = skuService.selectModelsByGoodId(goodsModel.getId());
+/*            List<SkuModel> skus = skuService.selectModelsByGoodId(goodsModel.getId());
             goodsModel.setSkus(skus);
             String[] images = goodsDO.getImages().split(",");
             List<String> list = Arrays.asList(images);
@@ -224,7 +234,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
 
             goodsModel.setFromAddr(fromAddr);
             goodsModel.setAfterService(li);
-            goodsModel.setImages(list);
+            goodsModel.setImages(list);*/
         }
         return goodsModel;
     }
@@ -254,6 +264,21 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         }
         GoodsModel goodsModel = new GoodsModel();
         BeanUtils.copyProperties(goodsDO, goodsModel);
+
+        List<SkuModel> skus = skuService.selectModelsByGoodId(goodsModel.getId());
+        goodsModel.setSkus(skus);
+        String[] images = goodsDO.getImages().split(",");
+        List<String> list = Arrays.asList(images);
+
+        String[] afterService = goodsDO.getAfterService().split(",");
+        List<String> li = Arrays.asList(afterService);
+
+        List<Map<String, String>> fromAddr = areaService.getRootAddr(Integer.valueOf(goodsDO.getFromAddr()));
+
+        goodsModel.setFromAddr(fromAddr);
+        goodsModel.setAfterService(li);
+        goodsModel.setImages(list);
+
         return goodsModel;
     }
 

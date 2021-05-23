@@ -3,26 +3,17 @@ package nuc.rwenjie.modules.sys.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import nuc.rwenjie.common.utils.RespBean;
-import nuc.rwenjie.common.utils.SpringBeanFactoryUtils;
 import nuc.rwenjie.modules.sys.controller.vo.CategoryVO;
-import nuc.rwenjie.modules.sys.dataobject.CategoryDO;
-import nuc.rwenjie.modules.sys.dataobject.UserDO;
 import nuc.rwenjie.modules.sys.service.CategoryService;
 import nuc.rwenjie.modules.sys.service.model.CategoryModel;
-import nuc.rwenjie.modules.sys.service.model.UserModel;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.color.CMMException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
 
 /**
  * @Author Rwenjie
@@ -34,7 +25,7 @@ import static nuc.rwenjie.common.constant.Constant.ROOT_PARENT_ID;
 @Api(tags = "CategoryController")
 @RestController
 @RequestMapping("/category")
-public class CategoryController extends BaseController {
+public class CategoryController  {
 
     @Autowired
     private CategoryService categoryService;
@@ -43,6 +34,7 @@ public class CategoryController extends BaseController {
     @GetMapping("/listing")
     public RespBean selectAll() {
         List<CategoryModel> categoryModelList = categoryService.selectAll();
+        System.out.println("-----------------------------------------------------------"+categoryModelList);
         return RespBean.success(204, "获取成功", categoryModelList);
     }
     private void findSubCategory(List<CategoryVO> categoryVOList, List<CategoryModel> categoryModelList) {
@@ -65,7 +57,7 @@ public class CategoryController extends BaseController {
     }
 
     @ApiOperation(value = "获得分类信息")
-    @GetMapping("/cid")
+    @GetMapping("/path/cid")
     private RespBean getAllCategoryByLeaf(Long cid) {
         List<Map<String, Object> > cs = categoryService.getAllCategoryByLeaf(cid);
         return RespBean.success(204, cs);
@@ -80,5 +72,21 @@ public class CategoryController extends BaseController {
         categoryVO.setLabel(categoryModel.getName());
         categoryVO.setValue(categoryModel.getId());
         return categoryVO;
+    }
+
+    @ApiOperation(value = "得到所有")
+    @GetMapping("/all")
+    public RespBean getAllCategory() {
+
+       return RespBean.success(categoryService.getAllCategory());
+    }
+
+    @ApiOperation(value = "根据id查询对应的Category")
+    @GetMapping("/cid")
+    public RespBean getCategoryById(Long cid) {
+        if (cid==null) {
+            return RespBean.error(440, "获取失败");
+        }
+        return RespBean.success(categoryService.getCategoryById(cid));
     }
 }
