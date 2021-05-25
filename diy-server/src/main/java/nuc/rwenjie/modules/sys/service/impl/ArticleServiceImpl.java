@@ -94,7 +94,26 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
      * @Param: userModel
      */
     @Override
-    public List<ArticleEntity> getArticleByUser(UserEntity userModel) {
-        return articleMapper.selectList(new QueryWrapper<ArticleEntity>().eq("user_id", userModel.getUserId()));
+    public List<ArticleEntity> publicGoodArticle(UserEntity userModel) {
+        return articleMapper.selectList(new QueryWrapper<ArticleEntity>()
+                .eq("user_id", userModel.getUserId())
+                .eq("sell", 0));
+    }
+
+    /**
+     * 更新是否有商品出售
+     *
+     * @param aid
+     * @return int
+     * @Param: aid
+     */
+    @Override
+    public int updateArticleSell(String aid) {
+        ArticleEntity articleEntity = articleMapper.selectById(aid);
+        if (articleEntity!=null) {
+            articleEntity.setSell(1);
+            return articleMapper.updateById(articleEntity);
+        }
+        return 0;
     }
 }

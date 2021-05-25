@@ -48,5 +48,12 @@ public interface IArticleService extends IService<ArticleEntity> {
      * @Param: userModel
      * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
      **/
-    List<ArticleEntity> getArticleByUser(UserEntity userModel);
+    List<ArticleEntity> publicGoodArticle(UserEntity userModel);
+    
+    /**
+     * 更新是否有商品出售
+     * @Param: aid
+     * @return int
+     **/
+    int updateArticleSell(String aid);
 }

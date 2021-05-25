@@ -3,6 +3,7 @@ package nuc.rwenjie.modules.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import nuc.rwenjie.common.utils.RespBean;
 import nuc.rwenjie.modules.sys.dataobject.GoodsDO;
+import nuc.rwenjie.modules.sys.entity.GoodsEntity;
 import nuc.rwenjie.modules.sys.service.model.GoodsModel;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface IGoodsService extends IService<GoodsDO> {
      * @Param: GoodsModel goodsModel Id
      * @return java.lang.Long
      **/
-   RespBean insertGoods(GoodsModel goodsModel, String id);
+   RespBean insertGoods(GoodsEntity goodsModel, String id);
 
    /**
     * 根据用户id查询商品

@@ -83,14 +83,14 @@ public class ArticleController {
         }
     }
 
-    @ApiOperation(value = "根据用户查询文章")
-    @GetMapping("/uid")
-    public RespBean getArticleByUser(Authentication authentication) {
+    @ApiOperation(value = "查询没有发布商品的文章")
+    @GetMapping("/goods/uid")
+    public RespBean publicGoodArticle(Authentication authentication) {
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
         if (userModel==null) {
             return RespBean.error("请进行登录");
         }
-       List<ArticleEntity> articles = articleService.getArticleByUser(userModel);
+       List<ArticleEntity> articles = articleService.publicGoodArticle(userModel);
         System.out.println(articles);
         return RespBean.success(articles);
     }

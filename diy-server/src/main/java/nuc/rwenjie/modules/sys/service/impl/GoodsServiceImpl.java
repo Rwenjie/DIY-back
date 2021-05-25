@@ -9,6 +9,7 @@ import nuc.rwenjie.modules.sys.dataobject.GoodsDO;
 import nuc.rwenjie.modules.sys.dataobject.SkuDO;
 import nuc.rwenjie.modules.sys.entity.AddressEntity;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.entity.GoodsEntity;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
 import nuc.rwenjie.modules.sys.mapper.GoodsMapper;
 import nuc.rwenjie.modules.sys.mapper.SkuMapper;
@@ -68,12 +69,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
      * @return java.lang.Long
      */
     @Override
-    public RespBean insertGoods(GoodsModel goodsModel, String id) {
+    public RespBean insertGoods(GoodsEntity goodsEntity, String id) {
 
-        System.out.println("Service================>"+goodsModel);
-        List<SkuModel> skuModelList = goodsModel.getSkus();
-        System.out.println(goodsModel.toString());
-        GoodsDO goodsDO = convertFromDataObject(goodsModel);
+        System.out.println("Service================>"+goodsEntity);
+        List<SkuModel> skuModelList = goodsEntity.getSkus();
+        System.out.println(goodsEntity.toString());
+        GoodsDO goodsDO = convertFromEntity(goodsEntity);
         goodsDO.setStatus(1);
         goodsDO.setUserId(id);
         goodsDO.setCreateTime(Time.NowTime());
@@ -85,6 +86,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         if (res == 0) {
             return RespBean.error(3001, "发布失败");
         }
+        articleService.updateArticleSell(goodsEntity.getArticle().getId());
 
         int num = 0;
         for (SkuModel skuModel: skuModelList ) {
@@ -245,6 +247,37 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
      * @Param: goodsModel
      * @return nuc.rwenjie.modules.sys.dataobject.GoodsDO
      **/
+    private GoodsDO convertFromEntity(GoodsEntity goodsModel){
+        if (goodsModel == null){
+            return null;
+        }
+        System.out.println("model+++++++++++   "+goodsModel);
+        GoodsDO goodsDO = new GoodsDO();
+        BeanUtils.copyProperties(goodsModel, goodsDO);
+        System.out.println("model+++++++++++   "+goodsDO);
+        goodsDO.setArticleId(goodsModel.getArticle().getId());
+        if (goodsModel.getImages()!=null) {
+            StringBuilder images = new StringBuilder();
+            for (String image : goodsModel.getImages()) {
+                images.append(image).append(",");
+            }
+            goodsDO.setImages(images.toString());
+        }
+        if (goodsModel.getAfterService() != null) {
+            StringBuilder afterService = new StringBuilder();
+            for (String as : goodsModel.getAfterService()) {
+                afterService.append(as).append(",");
+            }
+            goodsDO.setAfterService(afterService.toString());
+        }
+        return goodsDO;
+    }
+
+    /**
+     * 类型转换
+     * @Param: goodsModel
+     * @return nuc.rwenjie.modules.sys.dataobject.GoodsDO
+     **/
     private GoodsDO convertFromDataObject(GoodsModel goodsModel){
         if (goodsModel == null){
             return null;
@@ -254,7 +287,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         BeanUtils.copyProperties(goodsModel, goodsDO);
         System.out.println("model+++++++++++   "+goodsDO);
         goodsDO.setArticleId(goodsModel.getArticle().getId());
-
+        String images = "";
+        for (String image : goodsModel.getImages()) {
+            images += (image + ",");
+        }
+        goodsDO.setImages(images);
+        String afterServie = "";
+        for (String as : goodsModel.getAfterService()) {
+            System.out.println(as);
+            afterServie += (as + ",");
+        }
+        System.out.println(goodsModel+"=======================================================>"+afterServie);
+        goodsDO.setAfterService(afterServie);
         return goodsDO;
     }
 
@@ -287,6 +331,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
             return null;
         }
         SkuDO skuDO = new SkuDO();
+        int[] indexes = skuModel.getIndexes();
+        if (indexes.length > 0) {
+            String index = ""+indexes[0];
+            for (int i=1; i< indexes.length; i++) {
+                index += '_';
+                index += indexes[i];
+            }
+            skuDO.setIndexes(index);
+        }
         BeanUtils.copyProperties(skuModel, skuDO);
         return skuDO;
     }

@@ -14,4 +14,5 @@ import nuc.rwenjie.modules.sys.service.model.ArticleModel;
  */
 public interface ArticleMapper extends BaseMapper<ArticleEntity> {
 
+
 }

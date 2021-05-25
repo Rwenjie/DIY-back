@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import nuc.rwenjie.common.utils.RespBean;
+import nuc.rwenjie.modules.sys.entity.GoodsEntity;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.service.IGoodsService;
 import nuc.rwenjie.modules.sys.service.model.GoodsModel;
@@ -34,7 +35,7 @@ public class GoodsController {
 
     @ApiOperation("提交商品 商品发布")
     @PostMapping("/submit")
-    public RespBean submit (@RequestBody GoodsModel goods,  Authentication authentication) {
+    public RespBean submit (@RequestBody GoodsEntity goods, Authentication authentication) {
         System.out.println("++++++++++++++++++++++++++++++++++++"+goods);
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
 
