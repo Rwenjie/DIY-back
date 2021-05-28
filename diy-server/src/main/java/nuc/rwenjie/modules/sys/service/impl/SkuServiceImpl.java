@@ -67,6 +67,25 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDO> implements ISk
         return skuModelList;
     }
 
+    /**
+     * 根据id查询sku
+     *
+     * @param sid
+     * @return nuc.rwenjie.modules.sys.service.model.SkuModel
+     * @Param: sid
+     */
+    @Override
+    public SkuModel getSkuModelBySkuId(Long sid) {
+        List<SkuModel> skuModelList = new ArrayList<>();
+        SkuDO skuDO = skuMapper.selectById(sid);
+        SkuModel skuModel = convertFromModel(skuDO);
+        String[] indexes = skuDO.getIndexes().split("_");
+        int[] array = Arrays.asList(indexes).stream().mapToInt(Integer::parseInt).toArray();
+        skuModel.setIndexes(array);
+
+        return skuModel;
+    }
+
 
     private SkuDO convertFromDataObject(SkuModel skuModel){
         if (skuModel == null){

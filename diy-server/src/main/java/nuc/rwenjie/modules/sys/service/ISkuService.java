@@ -31,5 +31,12 @@ public interface ISkuService extends IService<SkuDO> {
      * @return java.util.List<nuc.rwenjie.modules.sys.service.model.SkuModel>
      **/
     List<SkuModel> selectModelsByGoodId(String gid);
+    
+    /**
+     * 根据id查询sku
+     * @Param: sid
+     * @return nuc.rwenjie.modules.sys.service.model.SkuModel
+     **/
+    SkuModel getSkuModelBySkuId(Long sid);
 
 }

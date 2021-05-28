@@ -1,7 +1,7 @@
 package nuc.rwenjie.modules.sys.mapper;
 
-import nuc.rwenjie.modules.sys.dataobject.Cart;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import nuc.rwenjie.modules.sys.entity.OrderEntity;
 
 /**
  * <p>
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-26
+ * @since 2021-05-27
  */
-public interface CartMapper extends BaseMapper<Cart> {
+public interface OrderMapper extends BaseMapper<OrderEntity> {
 
 }

@@ -39,12 +39,13 @@ public class AliOSSFiles {
     @Value("${oss.endpoint}")
     private String endpoint;
 
-    public URL uploadFile(String username, String filetype, MultipartFile multipartFile) throws OSSException, ClientException, FileNotFoundException {
+    public String uploadFile(String username, String filetype, MultipartFile multipartFile) throws OSSException, ClientException, FileNotFoundException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         URL url = null;
         String fileurl ="diy-shop/" + username+'/'+filetype+'/';
 
+        String newUrl = "";
         // 获取文件的后缀名
         String oldName = multipartFile.getOriginalFilename();
         String suffixName = oldName.substring(oldName.lastIndexOf("."));
@@ -65,7 +66,8 @@ public class AliOSSFiles {
             Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000);
             // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
             url = ossClient.generatePresignedUrl(bucketName, objectName, expiration);
-            System.out.println(url);
+            String src = url.toString();
+            newUrl = src.substring(0, src.indexOf("?"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +75,7 @@ public class AliOSSFiles {
             // 关闭流
             ossClient.shutdown();
         }
-        return url;
+        return newUrl;
     }
 
 }

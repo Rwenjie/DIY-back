@@ -2,11 +2,16 @@ package nuc.rwenjie.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import nuc.rwenjie.common.utils.Time;
 import nuc.rwenjie.modules.sys.dataobject.CartDO;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.CartMapper;
 import nuc.rwenjie.modules.sys.service.ICartService;
+import nuc.rwenjie.modules.sys.service.IGoodsService;
+import nuc.rwenjie.modules.sys.service.ISkuService;
 import nuc.rwenjie.modules.sys.service.model.CartModel;
+import nuc.rwenjie.modules.sys.service.model.GoodsModel;
+import nuc.rwenjie.modules.sys.service.model.SkuModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,10 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
 
     @Autowired
     CartMapper cartMapper;
+    @Autowired
+    IGoodsService goodsService;
+    @Autowired
+    ISkuService skuService;
     /**
      * 查询现在已有的购物车列表
      *
@@ -56,6 +65,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
      */
     @Override
     public int addCart(CartDO cartDO) {
+        cartDO.setCreateTime(Time.NowTime());
         return cartMapper.insert(cartDO);
     }
 
@@ -87,6 +97,36 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
         return row;
     }
 
+    /**
+     * 根据id的集合查询购物车商品的集合
+     *
+     * @param cartId
+     * @return java.util.List<nuc.rwenjie.modules.sys.service.model.CartModel>
+     * @Param: cartId
+     */
+    @Override
+    public CartModel getCartById(Long cartId) {
+        CartDO cartDO = cartMapper.selectById(cartId);
+        return convertFromModel(cartDO);
+    }
+
+    /**
+     * 根据id的集合查询购物车商品的集合
+     *
+     * @param cartId
+     * @return java.util.List<nuc.rwenjie.modules.sys.service.model.CartModel>
+     * @Param: cartId
+     */
+    @Override
+    public List<CartModel> getCartListByIds(Long[] cartId) {
+        List<CartModel> list = new ArrayList<>();
+        for (Long aLong : cartId) {
+            CartModel cartModel = getCartById(aLong);
+            list.add(cartModel);
+        }
+        return list;
+    }
+
 
     private CartModel convertFromModel(CartDO cartDO){
         if (cartDO == null){
@@ -94,6 +134,12 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
         }
         CartModel cartModel = new CartModel();
         BeanUtils.copyProperties(cartDO, cartModel);
+        GoodsModel goodsModel = goodsService.getGoodsById(cartDO.getGoodsId().toString());
+        SkuModel skuModel = skuService.getSkuModelBySkuId(cartDO.getSkuId());
+        cartModel.setProduct(goodsModel);
+        cartModel.setSku(skuModel);
+
+
 
         return cartModel;
     }

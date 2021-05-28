@@ -1,6 +1,6 @@
 package nuc.rwenjie.modules.sys.service;
 
-import nuc.rwenjie.modules.sys.dataobject.Tags;
+import nuc.rwenjie.modules.sys.dataobject.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-22
+ * @since 2021-05-27
  */
-public interface ITagsService extends IService<Tags> {
+public interface IOrderService extends IService<Order> {
 
 }

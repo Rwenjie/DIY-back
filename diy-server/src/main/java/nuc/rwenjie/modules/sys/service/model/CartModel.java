@@ -28,7 +28,7 @@ public class CartModel implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "用户id")
-    private Long uid;
+    private String uid;
 
     @ApiModelProperty(value = "商品数量")
     private Integer count;
@@ -42,8 +42,11 @@ public class CartModel implements Serializable {
     @ApiModelProperty(value = "sku 编号")
     private SkuModel sku;
 
+    @ApiModelProperty(value = "sku 编号")
+    private Long articleId;
+
     @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
+    private String createTime;
 
 
 }

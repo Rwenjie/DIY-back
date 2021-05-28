@@ -45,4 +45,18 @@ public interface ICartService extends IService<CartDO> {
      * @return int
      **/
     int deleteCart(Integer[] idList);
+
+    /**
+     * 根据id的集合查询购物车商品的集合
+     * @Param: cartId
+     * @return java.util.List<nuc.rwenjie.modules.sys.service.model.CartModel>
+     **/
+    CartModel getCartById(Long cartId);
+
+    /**
+     * 根据id的集合查询购物车商品的集合
+     * @Param: cartId
+     * @return java.util.List<nuc.rwenjie.modules.sys.service.model.CartModel>
+     **/
+    List<CartModel> getCartListByIds(Long[] cartId);
 }

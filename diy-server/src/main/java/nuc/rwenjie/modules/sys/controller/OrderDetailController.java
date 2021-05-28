@@ -2,7 +2,6 @@ package nuc.rwenjie.modules.sys.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-26
+ * @since 2021-05-27
  */
 @RestController
-@RequestMapping("//cart")
-public class CartController {
+@RequestMapping("/order-detail")
+public class OrderDetailController {
 
 }

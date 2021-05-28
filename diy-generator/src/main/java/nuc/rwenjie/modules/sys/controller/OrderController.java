@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-22
+ * @since 2021-05-27
  */
 @RestController
-@RequestMapping("//tags")
-public class TagsController {
+@RequestMapping("//order")
+public class OrderController {
 
 }

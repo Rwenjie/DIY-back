@@ -1,6 +1,6 @@
 package nuc.rwenjie.modules.sys.mapper;
 
-import nuc.rwenjie.modules.sys.dataobject.Tags;
+import nuc.rwenjie.modules.sys.dataobject.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author Rwenjie
- * @since 2021-05-22
+ * @since 2021-05-27
  */
-public interface TagsMapper extends BaseMapper<Tags> {
+public interface OrderMapper extends BaseMapper<Order> {
 
 }

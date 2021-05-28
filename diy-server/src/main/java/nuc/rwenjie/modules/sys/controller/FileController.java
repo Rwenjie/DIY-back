@@ -35,8 +35,8 @@ public class FileController {
         System.out.println("开始文件上传");
         String username = principal.getName();
         String filetype = "image";
-        URL url = aliOSSFiles.uploadFile(username, filetype, file);
-        if (url!=null) {
+        String url = aliOSSFiles.uploadFile(username, filetype, file);
+        if (url!="") {
             return RespBean.success("上传成功!", url);
         } else {
             return RespBean.error("上传失败！");

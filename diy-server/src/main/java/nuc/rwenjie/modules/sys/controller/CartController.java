@@ -8,6 +8,7 @@ import nuc.rwenjie.modules.sys.dataobject.CartDO;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.service.ICartService;
 import nuc.rwenjie.modules.sys.service.model.CartModel;
+import org.hibernate.type.LongType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +46,12 @@ public class CartController {
     @ApiOperation(value = "添加新的商品")
     @PostMapping("/add")
     public RespBean addCart(@RequestBody CartDO cartDO, Authentication authentication) {
+        System.out.println(cartDO);
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");
         }
+        cartDO.setUid(user.getUserId());
         int row = cartService.addCart(cartDO);
         return RespBean.success(row);
     }
