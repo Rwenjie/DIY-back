@@ -36,7 +36,7 @@ public class RegisterController {
         System.out.println(user);
         int result = registerService.userRegister(user);
         if (result==0){
-            return RespBean.error(500, "注册失败");
+            return RespBean.success(500, "注册失败");
         }
         return RespBean.success("注册成功");
     }
@@ -51,7 +51,7 @@ public class RegisterController {
                 return RespBean.success("手机号可用");
             }else{
                 System.out.println("12");
-                return RespBean.error("该手机号已被注册");
+                return RespBean.success(501, "该手机号已被注册", null);
             }
         }else{
             int result = registerService.findByPhone(phone);
@@ -60,7 +60,7 @@ public class RegisterController {
                 return RespBean.success("手机号可用");
             }else{
                 System.out.println("14");
-                return RespBean.error("该手机号已被注册");
+                return RespBean.success(501,"该手机号已被注册", null);
             }
         }
     }
@@ -74,14 +74,14 @@ public class RegisterController {
             if(!redisOperator.hasHkey(RedisConstant.USER_NAME_EXIST, username)){
                 return RespBean.success("用户名可用");
             }else{
-                return RespBean.error("该用户名已被注册");
+                return RespBean.success(501, "该用户名已被注册", null);
             }
         }else{
             int result = registerService.findByUsername(username);
             if(result == 0){
                 return RespBean.success("用户名可用");
             }else{
-                return RespBean.error("该用户名已被注册");
+                return RespBean.error(501, "该用户名已被注册", null);
             }
         }
     }

@@ -40,6 +40,7 @@ public class CaptchaController extends BaseController{
     @ApiOperation(value = "验证短信验证码")
     @GetMapping("/verify")
     public RespBean CheckCaptcha(String mobile, String smsCode) {
+        System.out.println("验证短信验证码");
         String res =  smsService.verifyCode(mobile, smsCode);
         if (res.equals(SMSUtil.CaptchaOk)){
             return RespBean.success("验证成功");

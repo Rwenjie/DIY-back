@@ -31,7 +31,7 @@ public class CategoryController  {
     private CategoryService categoryService;
 
     @ApiOperation(value = "获得分类信息")
-    @GetMapping("/listing")
+    @GetMapping("/ren/listing")
     public RespBean selectAll() {
         List<CategoryModel> categoryModelList = categoryService.selectAll();
         System.out.println("-----------------------------------------------------------"+categoryModelList);
@@ -57,7 +57,7 @@ public class CategoryController  {
     }
 
     @ApiOperation(value = "获得分类信息")
-    @GetMapping("/path/cid")
+    @GetMapping("/ren/path/cid")
     private RespBean getAllCategoryByLeaf(Long cid) {
         List<Map<String, Object> > cs = categoryService.getAllCategoryByLeaf(cid);
         return RespBean.success(204, cs);
@@ -75,14 +75,14 @@ public class CategoryController  {
     }
 
     @ApiOperation(value = "得到所有")
-    @GetMapping("/all")
+    @GetMapping("/ren/all")
     public RespBean getAllCategory() {
 
        return RespBean.success(categoryService.getAllCategory());
     }
 
     @ApiOperation(value = "根据id查询对应的Category")
-    @GetMapping("/cid")
+    @GetMapping("/ren/cid")
     public RespBean getCategoryById(Long cid) {
         if (cid==null) {
             return RespBean.error(440, "获取失败");

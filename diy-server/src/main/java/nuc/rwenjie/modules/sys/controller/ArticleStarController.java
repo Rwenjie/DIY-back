@@ -26,12 +26,12 @@ public class ArticleStarController extends BaseController{
     @Autowired
     IArticleStarService articleStarService;
 
-    @GetMapping("/state")
+    @GetMapping("/ren/state")
     @ApiOperation(value = "用户是否点赞了")
     public RespBean getStarState(String aid, Authentication authentication) {
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
         if (userModel == null) {
-            return RespBean.error(401, "", false);
+            return RespBean.error(210, "", false);
         }
         int re = articleStarService.getStarState(userModel.getUserId(), aid);
         if (re == 0) {

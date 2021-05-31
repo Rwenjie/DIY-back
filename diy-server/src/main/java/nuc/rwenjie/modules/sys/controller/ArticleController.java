@@ -37,9 +37,10 @@ public class ArticleController {
     CategoryService categoryService;
 
     @ApiOperation(value = "查询所有文章")
-    @GetMapping("/all")
+    @GetMapping("/ren/all")
     @Transactional
     public RespBean getAllArticle() {
+        System.out.println("获得所有文章");
         List<ArticleEntity> articles =  articleService.getAllArticle();
         List<ArticleVO> articleVOList = new ArrayList<>();
         articles.forEach( article -> {
@@ -55,7 +56,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "根据ID查询文章")
-    @GetMapping("/id")
+    @GetMapping("/ren/id/")
     public RespBean getArticleById(String id) {
         System.out.println("id===>"+id);
         ArticleEntity article = articleService.getArticleById(id);

@@ -76,7 +76,7 @@ public class GoodsController {
 
     @Transactional
     @ApiOperation("根据文章查询商品")
-    @GetMapping("/aid")
+    @GetMapping("/ren/aid")
     public RespBean getItemByArticle(String aid) {
 
         System.out.println("aid=====>"+aid);

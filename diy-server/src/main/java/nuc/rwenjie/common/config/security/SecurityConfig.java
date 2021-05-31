@@ -67,7 +67,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/login/**",
                 "/register/**",
                 "/captcha/**",
-                "/w/**"
+                "/w/**",
+                "/ali/notify",
+                "/ali/**",
+                "/article/ren/**",
+                "/category/ren/**",
+                "/tags/ren/**",
+                "/goods/ren/**",
+                "/item/ren/**",
+                "/comment/selCommentReviewer",
+                "/ali/alipayReturnNotice"
         );
     }
 

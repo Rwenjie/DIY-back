@@ -29,13 +29,13 @@ public class TagsController {
     ITagsService tagsService;
 
     @ApiOperation(value = "查询所有标签")
-    @GetMapping("/all")
+    @GetMapping("/ren/all")
     public RespBean getAllTags() {
         return RespBean.success(tagsService.getAllTags());
     }
 
     @ApiOperation(value = "根据id查询")
-    @GetMapping("tid")
+    @GetMapping("/ren/tid")
     public RespBean getTagById(String tid) {
         System.out.println("=============================tid"+tid);
         Long tiid = Long.valueOf(tid);

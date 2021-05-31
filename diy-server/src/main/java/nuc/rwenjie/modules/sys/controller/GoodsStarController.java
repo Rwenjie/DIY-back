@@ -26,12 +26,12 @@ public class GoodsStarController {
     IGoodsStarService goodsStarService;
 
     @Transactional
-    @GetMapping("/state")
+    @GetMapping("/ren/state")
     @ApiOperation(value = "用户是否点赞了")
     public RespBean getStarState(String gid, Authentication authentication) {
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
         if (userModel == null) {
-            return RespBean.error(401, "", false);
+            return RespBean.error(201, "", false);
         }
         int re = goodsStarService.getStarState(userModel.getUserId(), gid);
         if (re == 0) {
