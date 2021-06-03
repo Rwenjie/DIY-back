@@ -89,12 +89,8 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
      * @Param: idList
      */
     @Override
-    public int deleteCart(Integer[] idList) {
-        int row = 0;
-        for (Integer id: idList) {
-            row += cartMapper.deleteById(id);
-        }
-        return row;
+    public int deleteCart(String cid) {
+        return cartMapper.deleteById(cid);
     }
 
     /**
@@ -127,7 +123,6 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
         return list;
     }
 
-
     private CartModel convertFromModel(CartDO cartDO){
         if (cartDO == null){
             return null;
@@ -138,9 +133,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartDO> implements 
         SkuModel skuModel = skuService.getSkuModelBySkuId(cartDO.getSkuId());
         cartModel.setProduct(goodsModel);
         cartModel.setSku(skuModel);
-
-
-
+        cartModel.setId(cartDO.getId().toString());
         return cartModel;
     }
 }

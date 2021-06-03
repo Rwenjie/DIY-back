@@ -10,6 +10,7 @@ import nuc.rwenjie.modules.sys.dataobject.UserDO;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.UserMapper;
 import nuc.rwenjie.modules.sys.service.AccountService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,10 +47,11 @@ public class AccountServiceImpl extends ServiceImpl<UserMapper, UserEntity> impl
         if (user == null) {
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
-        if(!user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
-            return RespBean.success("原密码正确");
+        System.out.println("=====>"+user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex()));
+        if(user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
+            return RespBean.success(200, "原密码正确");
         } else {
-            return RespBean.error("原密码不正确");
+            return RespBean.error(500, "原密码不正确");
         }
     }
 
@@ -63,8 +65,15 @@ public class AccountServiceImpl extends ServiceImpl<UserMapper, UserEntity> impl
      * @Param: name
      */
     @Override
-    public RespBean chengPwd(String password, String username) {
-        int row = userMapper.update(null, new UpdateWrapper<UserEntity>().eq("mobile", username).set("password", password));
+    public RespBean chengPwd(String password, UserEntity user) {
+        UserEntity userEntity = userMapper.selectById(user.getUserId());
+        //密码加密
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        userEntity.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
+        userEntity.setSalt(salt);
+        System.out.println("changePwd=>>>"+password);
+        int row = userMapper.updateById(userEntity);
         if (row==0) {
             return RespBean.error("修改密码失败");
         }

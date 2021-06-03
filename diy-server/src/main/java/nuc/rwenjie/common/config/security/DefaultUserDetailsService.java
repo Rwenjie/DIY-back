@@ -30,8 +30,6 @@ public class DefaultUserDetailsService implements UserDetailsService {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         // 从数据库中取出用户信息 账号密码登录实际上用的时手机号密码登录
         UserEntity user = userService.getUserByMobile(username);
-
-        System.out.println(user.toString());
         // 判断用户是否存在
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");

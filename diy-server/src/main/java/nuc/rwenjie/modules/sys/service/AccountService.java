@@ -30,5 +30,5 @@ public interface AccountService extends IService<UserEntity> {
      * @Param: name
      * @return nuc.rwenjie.common.utils.RespBean
      **/
-    RespBean chengPwd(String password, String name);
+    RespBean chengPwd(String password, UserEntity user);
 }

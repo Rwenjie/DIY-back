@@ -17,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * @Author Rwenjie
@@ -40,7 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      */
     @Override
     public UserEntity getUserById(String id) throws BusinessException{
-        UserEntity user = userMapper.selectOne(new QueryWrapper<UserEntity>().eq("id", id));
+        UserEntity user = userMapper.selectOne(new QueryWrapper<UserEntity>().eq("user_id", id));
         if (user == null) {
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
@@ -80,6 +82,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
         return userEntity;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     * @return nuc.rwenjie.modules.sys.entity.UserEntity
+     * @param: user
+     */
+    @Override
+    public UserEntity updateUserInfo(UserEntity user){
+        UserEntity userEntity = userMapper.selectById(user.getUserId());
+        userEntity.setAvatar(user.getAvatar());
+        userEntity.setBirthday(user.getBirthday());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setSex(user.getSex());
+        int n = userMapper.updateById(userEntity);
+        return userEntity;
+    }
+
+    /**
+     * 获得所有操作人
+     *
+     * @param keywords
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.UserEntity>
+     * @param: keywords
+     */
+    @Override
+    public List<UserEntity> getAllFriends(String keywords) {
+        return userMapper.selectList(new QueryWrapper<UserEntity>());
     }
 
     /**

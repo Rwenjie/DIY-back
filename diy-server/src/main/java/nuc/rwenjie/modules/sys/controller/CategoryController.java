@@ -34,7 +34,6 @@ public class CategoryController  {
     @GetMapping("/ren/listing")
     public RespBean selectAll() {
         List<CategoryModel> categoryModelList = categoryService.selectAll();
-        System.out.println("-----------------------------------------------------------"+categoryModelList);
         return RespBean.success(204, "获取成功", categoryModelList);
     }
     private void findSubCategory(List<CategoryVO> categoryVOList, List<CategoryModel> categoryModelList) {

@@ -116,4 +116,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
         }
         return 0;
     }
+
+    /**
+     * 根据用户查询文章
+     *
+     * @param userModel
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
+     * @param: userModel
+     */
+    @Override
+    public List<ArticleEntity> getArticleByUser(UserEntity userModel) {
+        return articleMapper.selectList(new QueryWrapper<ArticleEntity>()
+                .eq("user_id", userModel.getUserId()));
+    }
 }

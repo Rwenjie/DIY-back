@@ -33,7 +33,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryMod
 
         List<CategoryDO> categories = categoryMapper.selectAll();
 
-        System.out.println("categories+==========================+++++++"+categories);
         //查出parent_id=0
         for (CategoryDO category : categories) {
             if (category.getParentId() == 0) {
@@ -62,7 +61,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryMod
      */
     @Override
     public CategoryModel getCategoryById(Long categoryId) {
-        System.out.println(categoryId);
         CategoryDO categoryDO = categoryMapper.selectByPrimaryKey(categoryId);
         return convertFromDataObject(categoryDO);
     }

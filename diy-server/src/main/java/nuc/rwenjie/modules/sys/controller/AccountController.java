@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import nuc.rwenjie.common.error.BusinessException;
 import nuc.rwenjie.common.utils.RespBean;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.UserMapper;
 import nuc.rwenjie.modules.sys.service.AccountService;
 import nuc.rwenjie.modules.sys.service.model.UserModel;
@@ -35,14 +36,16 @@ public class AccountController {
     @ApiOperation(value = "原密码是否正确")
     @GetMapping("/oldpass")
     public RespBean checkOldPwd(String password, Authentication authentication) throws BusinessException {
-        UserModel userModel = (UserModel) authentication.getPrincipal();
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
         System.out.println(userModel);
         return accountService.checkOldPwd(password, userModel.getMobile());
     }
 
     @ApiOperation(value = "修改密码")
-    @PostMapping("/change/pass")
-    public RespBean chengPwd(String password, Principal principal) throws BusinessException {
-        return accountService.chengPwd(password, principal.getName());
+    @GetMapping("/change/pass")
+    public RespBean chengPwd(String password, Authentication authentication) throws BusinessException {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        System.out.println(userModel);
+        return accountService.chengPwd(password, userModel);
     }
 }

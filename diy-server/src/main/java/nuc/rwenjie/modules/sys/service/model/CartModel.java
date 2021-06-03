@@ -25,7 +25,7 @@ public class CartModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "购物车id")
-    private Long id;
+    private String id;
 
     @ApiModelProperty(value = "用户id")
     private String uid;

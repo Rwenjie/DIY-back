@@ -10,6 +10,7 @@ import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,18 +31,19 @@ public class OrderController {
     @Autowired
     IOrderService orderService;
 
+    @Transactional
     @ApiOperation(value="在购物车创建新的订单")
     @PostMapping("/create/cart")
-    public RespBean createOrderByCart(Long [] cartId, Authentication authentication) {
+    public RespBean createOrderByCart(@RequestBody Long [] cartId, Authentication authentication) {
+        System.out.println("======================================="+cartId);
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");
         }
-        int row = orderService.createOrderByCart(cartId, user);
-        if (row == cartId.length) {
-            return RespBean.success(200, "创建订单成功");
-        }
-        else {
+        Long oid = orderService.createOrderByCart(cartId, user);
+        if (oid!=null) {
+            return RespBean.success(200, "创建订单成功", oid);
+        } else {
             return RespBean.error("下单失败");
         }
     }
@@ -49,7 +51,6 @@ public class OrderController {
     @ApiOperation(value="商品页面直接下单")
     @PostMapping("/create/now")
     public RespBean createOrderNow(@RequestBody OrderDetailDO orderDetailDO, Authentication authentication) {
-        System.out.println("+++++++++++++++++++++++"+orderDetailDO);
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");

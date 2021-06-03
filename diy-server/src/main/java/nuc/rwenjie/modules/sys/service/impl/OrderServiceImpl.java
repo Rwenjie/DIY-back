@@ -2,11 +2,9 @@ package nuc.rwenjie.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import nuc.rwenjie.common.utils.SpringBeanFactoryUtils;
 import nuc.rwenjie.common.utils.Time;
 import nuc.rwenjie.modules.sys.controller.vo.OrderVO;
 import nuc.rwenjie.modules.sys.dataobject.OrderDetailDO;
-import nuc.rwenjie.modules.sys.dataobject.SkuDO;
 import nuc.rwenjie.modules.sys.entity.OrderEntity;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.OrderDetailMapper;
@@ -17,13 +15,13 @@ import nuc.rwenjie.modules.sys.service.IOrderService;
 import nuc.rwenjie.modules.sys.service.ISkuService;
 import nuc.rwenjie.modules.sys.service.model.CartModel;
 import nuc.rwenjie.modules.sys.service.model.OrderDetailModel;
-import nuc.rwenjie.modules.sys.service.model.SkuModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>
@@ -58,7 +56,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
      * @return int
      */
     @Override
-    public int createOrderByCart(Long[] cartId, UserEntity user) {
+    public Long createOrderByCart(Long[] cartId, UserEntity user) {
 
         List<CartModel> cartModels = cartService.getCartListByIds(cartId);
         String sellId = cartService.getCartById(cartId[0]).getProduct().getUserId();
@@ -69,7 +67,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         order.setAfterStatus(0);
         order.setCreatedTime(Time.NowTime());
         orderMapper.insert(order);
-        int row = 0;
+        AtomicReference<Integer> rows = new AtomicReference<>(0);
         cartModels.forEach( cart -> {
             OrderDetailDO detailDO = new OrderDetailDO();
             detailDO.setOrderId(order.getId());
@@ -79,9 +77,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             detailDO.setGoodsId(cart.getProduct().getId());
             detailDO.setSkuId(cart.getSku().getId());
             detailDO.setCreateTime(Time.NowTime());
-            detailMapper.insert(detailDO);
+            rows.updateAndGet(v -> v + detailMapper.insert(detailDO));
         });
-        return 0;
+        return order.getId();
     }
 
     /**

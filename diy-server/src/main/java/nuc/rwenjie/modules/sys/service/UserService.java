@@ -7,6 +7,8 @@ import nuc.rwenjie.modules.sys.dataobject.UserDO;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.service.model.UserModel;
 
+import java.util.List;
+
 /**
  * @Author Rwenjie
  * @ClassName UserService
@@ -40,4 +42,18 @@ public interface UserService extends IService<UserEntity> {
      * @return com.rwenjie.server.pojo.User
      **/
     UserEntity getUserByMobile(String mobile) throws BusinessException;
+
+    /**
+     * 更新用户信息
+     * @param: user
+     * @return nuc.rwenjie.modules.sys.entity.UserEntity
+     **/
+    UserEntity updateUserInfo(UserEntity user);
+
+    /**
+     * 获得所有操作人
+     * @param: keywords
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.UserEntity>
+     **/
+    List<UserEntity> getAllFriends(String keywords);
 }

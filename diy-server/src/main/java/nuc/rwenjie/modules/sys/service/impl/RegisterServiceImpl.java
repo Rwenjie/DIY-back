@@ -69,8 +69,6 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public int findByPhone(String mobile) {
         int phoneNum = registerMapper.selectCount(new QueryWrapper<UserEntity>().eq("mobile", mobile));
-        // 异步把数据库中的手机号存入缓存
-        asyncService.insUserPhone();
         return phoneNum;
     }
 
@@ -78,8 +76,6 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public int findByUsername(String username) {
         int userNum = registerMapper.selectCount(new QueryWrapper<UserEntity>().eq("username", username));
-        // 异步把数据库中的用户名存入缓存
-        asyncService.insUsername();
         return userNum;
     }
 }

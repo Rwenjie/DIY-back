@@ -44,7 +44,7 @@ public interface ICartService extends IService<CartDO> {
      * @Param: idList
      * @return int
      **/
-    int deleteCart(Integer[] idList);
+    int deleteCart(String cid);
 
     /**
      * 根据id的集合查询购物车商品的集合

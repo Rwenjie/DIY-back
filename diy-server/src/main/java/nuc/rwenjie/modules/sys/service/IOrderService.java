@@ -23,7 +23,7 @@ public interface IOrderService extends IService<OrderEntity> {
      * @Param: cartId
      * @return int
      **/
-    int createOrderByCart(Long[] cartId, UserEntity user);
+    Long createOrderByCart(Long[] cartId, UserEntity user);
 
     /**
      * 商品页面直接创建订单

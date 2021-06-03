@@ -69,14 +69,19 @@ public class CartController {
 
     @ApiOperation(value = "删除商品")
     @GetMapping("/delete")
-    public RespBean deleteCart(Integer[] idList, Authentication authentication) {
+    public RespBean deleteCart(String cid, Authentication authentication) {
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");
         }
-        int row = cartService.deleteCart(idList);
-        return RespBean.success(row);
+        int row = cartService.deleteCart(cid);
+        if (row ==0 ) {
+            return RespBean.error(500, "删除失败");
+        }
+        return RespBean.success(200, "删除成功", row);
     }
+
+
 
 
 

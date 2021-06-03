@@ -50,8 +50,14 @@ public class LoginServiceImpl implements LoginService {
     public RespBean login(String username, String password) {
 
         UserEntity user = userDetailsService.loadUserByUsername(username);
-
-        if (null==user||user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
+        System.out.println(user);
+        System.out.println(password);
+        System.out.println(new Sha256Hash(password, user.getSalt()).toHex());
+        if (user == null ) {
+            return  RespBean.error("用户不存在");
+        }
+        if (!user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
+            System.out.println("111");
             return RespBean.error("用户名或密码不正确");
         }
         if (user.getStatus()!=1) {

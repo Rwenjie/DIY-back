@@ -5,8 +5,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>back-stage</module>
+        <!--<module>back-stage</module>-->
         <module>renren-generator</module>
+        <module>back-stage</module>
         <module>diy-generator</module>
         <module>diy-server</module>
     </modules>
