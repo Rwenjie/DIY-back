@@ -2,23 +2,25 @@ package nuc.rwenjie.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import nuc.rwenjie.common.utils.GenerateID;
 import nuc.rwenjie.common.utils.Time;
 import nuc.rwenjie.modules.sys.controller.vo.OrderVO;
 import nuc.rwenjie.modules.sys.dataobject.OrderDetailDO;
+import nuc.rwenjie.modules.sys.entity.AddressEntity;
 import nuc.rwenjie.modules.sys.entity.OrderEntity;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.OrderDetailMapper;
 import nuc.rwenjie.modules.sys.mapper.OrderMapper;
-import nuc.rwenjie.modules.sys.service.ICartService;
-import nuc.rwenjie.modules.sys.service.IGoodsService;
-import nuc.rwenjie.modules.sys.service.IOrderService;
-import nuc.rwenjie.modules.sys.service.ISkuService;
+import nuc.rwenjie.modules.sys.service.*;
 import nuc.rwenjie.modules.sys.service.model.CartModel;
 import nuc.rwenjie.modules.sys.service.model.OrderDetailModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -49,6 +51,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     @Autowired
     ISkuService skuService;
 
+    @Autowired
+    IAddressService addressService;
+
+    @Resource
+    private GenerateID generateId;
+
     /**
      * 根据购物车创建订单
      * @param cartId
@@ -56,20 +64,30 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
      * @return int
      */
     @Override
-    public Long createOrderByCart(Long[] cartId, UserEntity user) {
-
+    public String createOrderByCart(Long[] cartId, UserEntity user) {
         List<CartModel> cartModels = cartService.getCartListByIds(cartId);
         String sellId = cartService.getCartById(cartId[0]).getProduct().getUserId();
+        AddressEntity address = addressService.getDefaultOrder(user.getUserId());
         OrderEntity order = new OrderEntity();
+        String oid = generateId.generateOrderId();
+        //插入订单表数据
+        order.setId(oid);
+        order.setAddressId(address.getId());
         order.setBuyerId(user.getUserId());
-        order.setOrderStatus(0);
+        order.setOrderStatus(1);
         order.setSellerId(sellId);
         order.setAfterStatus(0);
+        order.setLogisticsFee(new BigDecimal("0.00"));
         order.setCreatedTime(Time.NowTime());
         orderMapper.insert(order);
         AtomicReference<Integer> rows = new AtomicReference<>(0);
+        AtomicReference<Float> amountTotal = new AtomicReference<>((float) 0);
+        //插入订单详情表数据
         cartModels.forEach( cart -> {
             OrderDetailDO detailDO = new OrderDetailDO();
+            DecimalFormat df1 = new DecimalFormat("0.00");
+            String str = df1.format(cart.getSku().getPrice());
+            amountTotal.updateAndGet(v -> (float) (v + Float.parseFloat(str) * cart.getCount()));
             detailDO.setOrderId(order.getId());
             detailDO.setArticleId(cart.getArticleId());
             detailDO.setCount(cart.getCount());
@@ -79,6 +97,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             detailDO.setCreateTime(Time.NowTime());
             rows.updateAndGet(v -> v + detailMapper.insert(detailDO));
         });
+        // 更新订单总金额
+        BigDecimal a1 = new BigDecimal(String.valueOf(amountTotal));
+        order.setProductAmountTotal(a1);
+        order.setUpdatedTime(Time.NowTime());
+        orderMapper.updateById(order);
+
         return order.getId();
     }
 
@@ -90,9 +114,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
      * @return int
      */
     @Override
-    public Long createOrderNow(OrderDetailDO orderDetailDO, UserEntity user) {
+    public String createOrderNow(OrderDetailDO orderDetailDO, UserEntity user) {
         String sellId = goodsService.getGoodsById(orderDetailDO.getGoodsId()).getUserId();
         OrderEntity order = new OrderEntity();
+        String oid = generateId.generateOrderId();
+        order.setId(oid);
         order.setBuyerId(user.getUserId());
         order.setOrderStatus(0);
         order.setSellerId(sellId);
@@ -105,7 +131,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         if (row !=0) {
             return order.getId();
         }
-        return -1L;
+        return "-1";
     }
 
     public List<OrderDetailModel> getOrderDetailByOrder(OrderEntity orderEntity) {
@@ -152,13 +178,53 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
      * @return nuc.rwenjie.modules.sys.controller.vo.OrderVO
      */
     @Override
-    public OrderVO getOrderByOid(Long oid) {
+    public OrderVO getOrderByOid(String oid) {
         OrderVO orderVO = new OrderVO();
         OrderEntity orderEntity = orderMapper.selectById(oid);
         System.out.println("+++++++++++++++++++++++++"+oid+"+++++++++++++++++++++++++++++++++++++++++++++++"+orderEntity);
         orderVO.setOrder(orderEntity);
         orderVO.setOrderDetailList(getOrderDetailByOrder(orderEntity));
         return orderVO;
+    }
+
+    /**
+     * 更新收货地址
+     *
+     * @param aid
+     * @return int
+     * @param: aid
+     */
+    @Override
+    public int updateDeliveryAddr(Long aid, String oid) {
+        OrderEntity orderEntity = orderMapper.selectById(oid);
+        if (orderEntity!=null) {
+            orderEntity.setAddressId(aid);
+            orderEntity.setUpdatedTime(Time.NowTime());
+            return orderMapper.updateById(orderEntity);
+        }
+        return 0;
+    }
+
+    /**
+     *
+     * @param oid 订单编号
+     * @param outTradeNo 第三方流水号
+     * @param payMethod 支付方式
+     * @return int
+     **/
+    @Override
+    public int updatePaySuccess(String oid, String outTradeNo, int payMethod) {
+
+        OrderEntity orderEntity = orderMapper.selectById(oid);
+        System.out.println(orderEntity);
+        //第三方流水号
+        orderEntity.setEscrowTradeNo(outTradeNo);
+        // 更新订单状态为 2
+        orderEntity.setOrderStatus(2);
+        // 支付时间
+        orderEntity.setPayTime(Time.NowTime());
+        orderEntity.setUpdatedTime(Time.NowTime());
+        return orderMapper.updateById(orderEntity);
     }
 
     private OrderDetailModel convertFromModel(OrderDetailDO detailDO){

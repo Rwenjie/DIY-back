@@ -7,10 +7,14 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import nuc.rwenjie.modules.sys.service.IOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import nuc.rwenjie.common.utils.ali.pay.AliPayConfig;
+import nuc.rwenjie.common.utils.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -24,26 +28,23 @@ import java.util.Map;
  * @Date 2021/5/30 20:11
  **/
 
-@RestController
-@RequestMapping("/ali")
+@Controller
 @Api(tags = "AliPayController")
 public class AliPayController {
 
+    @Autowired
+    IOrderService orderService;
     /**
      * 支付接口
-     *
-     * @param orderId 订单id
-     * @param amount  支付金额
-     * @param product 商品名称
-     * @param body    商品描述
      * @return
      * @throws AlipayApiException
      */
     @ApiOperation(value = "aliPay")
-    @GetMapping("/pay")
+    @GetMapping("/ali/pay")
+    @ResponseBody
     public String aliPay(String data) throws AlipayApiException {
 
-        System.out.println(data);
+        System.out.println("myPay"+data);
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AliPayConfig.gatewayUrl,
                 AliPayConfig.app_id,
@@ -54,8 +55,8 @@ public class AliPayController {
                 AliPayConfig.sign_type);
         //  page
         AlipayTradePagePayRequest alipayPageRequest = new AlipayTradePagePayRequest();
-        alipayPageRequest.setReturnUrl(AliPayConfig.NOTIFY_URL);
-        alipayPageRequest.setNotifyUrl(AliPayConfig.RETURN_URL);
+        alipayPageRequest.setReturnUrl(AliPayConfig.RETURN_URL);
+       // alipayPageRequest.setNotifyUrl(AliPayConfig.RETURN_URL);
 
 
         //拼接参数
@@ -75,8 +76,41 @@ public class AliPayController {
      * @throws Exception
      */
     @ApiOperation(value = "alipayReturnNotice")
-    @RequestMapping("/return_url")
-    public String alipayReturnNotice( HttpServletRequest request, HttpServletRequest response) throws Exception {
+    @RequestMapping("/ali/pay_success")
+    public String alipayReturnNotice(HttpServletRequest request, HttpServletRequest response) throws Exception {
+
+        System.out.println("支付成功, 进入同步通知接口...");
+
+        //获取支付宝GET过来反馈信息
+        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            //乱码解决，这段代码在出现乱码时使用
+            valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+        System.out.println(params);
+
+        //支付订单号
+        String out_trade_no=params.get("out_trade_no");
+        //支付宝流水号
+        String trade_no=params.get("trade_no");
+
+        System.out.println("oid"+out_trade_no);
+        System.out.println("trade_no: "+ trade_no);
+        orderService.updatePaySuccess(out_trade_no, trade_no, Constant.PayChannel.ALI_PAY);
+
+        return "http://localhost:9001/home";//成功返回首页
+    }
+
+   /* public String alipayReturnNotice( HttpServletRequest request, HttpServletRequest response) throws Exception {
 
         System.out.println("支付成功, 进入同步通知接口...");
 
@@ -125,7 +159,7 @@ public class AliPayController {
             System.out.println("支付, 验签失败...");
         }
         return "/business/index";//成功返回首页
-    }
+    }*/
 
     /**
      * 支付宝异步 通知页面

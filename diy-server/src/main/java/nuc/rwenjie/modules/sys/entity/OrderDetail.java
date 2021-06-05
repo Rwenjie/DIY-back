@@ -32,7 +32,7 @@ public class OrderDetail implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "订单主表")
-    private Long orderId;
+    private String orderId;
 
     @ApiModelProperty(value = "文章")
     private Long articleId;

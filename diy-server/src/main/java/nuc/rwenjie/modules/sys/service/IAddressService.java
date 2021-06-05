@@ -50,4 +50,11 @@ public interface IAddressService extends IService<AddressEntity> {
      * @Param: aid
      **/
     int deleteAddress(String aid);
+
+    /**
+     * 获得用户的默认地址
+     * @param: uid
+     * @return nuc.rwenjie.modules.sys.entity.AddressEntity
+     **/
+    AddressEntity getDefaultOrder(String uid);
 }

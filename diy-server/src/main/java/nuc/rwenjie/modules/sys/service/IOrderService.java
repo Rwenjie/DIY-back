@@ -23,14 +23,14 @@ public interface IOrderService extends IService<OrderEntity> {
      * @Param: cartId
      * @return int
      **/
-    Long createOrderByCart(Long[] cartId, UserEntity user);
+    String createOrderByCart(Long[] cartId, UserEntity user);
 
     /**
      * 商品页面直接创建订单
      * @Param: orderDetailDO
      * @return Long
      **/
-    Long createOrderNow(OrderDetailDO orderDetailDO, UserEntity user);
+    String createOrderNow(OrderDetailDO orderDetailDO, UserEntity user);
 
     /**
      * 根据用户查询订单
@@ -45,5 +45,21 @@ public interface IOrderService extends IService<OrderEntity> {
      * @param: oid
      * @return nuc.rwenjie.modules.sys.controller.vo.OrderVO
      **/
-    OrderVO getOrderByOid(Long oid);
+    OrderVO getOrderByOid(String oid);
+
+    /**
+     * 更新收货地址
+     * @param: aid
+     * @return int
+     **/
+    int updateDeliveryAddr(Long aid, String uid);
+
+    /**
+     * 支付成功后更新订单信息
+     * @param oid 订单编号
+     * @param outTradeNo 订单支付单号
+     * @param  payMethod 支付方式
+     * @return int 更新数据个数
+     **/
+    int updatePaySuccess(String oid, String outTradeNo, int payMethod);
 }

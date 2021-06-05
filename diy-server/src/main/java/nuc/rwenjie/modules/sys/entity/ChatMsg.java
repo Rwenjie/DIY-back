@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class ChatMsg implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String form;
+    private String from;
 
     private String to;
 
@@ -29,5 +29,5 @@ public class ChatMsg implements Serializable {
 
     private LocalDateTime date;
 
-    private String formNickName;
+    private String fromNickName;
 }

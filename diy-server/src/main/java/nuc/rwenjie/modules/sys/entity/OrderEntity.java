@@ -28,8 +28,8 @@ public class OrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id")
+    private String id;
 
     @ApiModelProperty(value = "客户编号")
     private String buyerId;

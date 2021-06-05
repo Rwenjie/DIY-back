@@ -28,14 +28,14 @@ public class OrderModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id")
+    private String id;
 
     @ApiModelProperty(value = "客户编号")
-    private Integer buyerId;
+    private String buyerId;
 
     @ApiModelProperty(value = "商户编码")
-    private Integer sellerId;
+    private String sellerId;
 
     @ApiModelProperty(value = "订单状态 0未付款,1已付款,2已发货,3已签收,-1退货申请,-2退货中,-3已退货,-4取消交易")
     private Integer orderStatus;

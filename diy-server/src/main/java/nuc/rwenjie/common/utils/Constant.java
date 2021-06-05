@@ -14,6 +14,16 @@ public class Constant {
 
     public static final Integer ROOT_PARENT_ID = 0;
 
+
+    public static class PayChannel {
+
+        //支付宝支付
+        public static final Integer ALI_PAY = 1;
+        //微信支付
+        public static final Integer Wechat_Pay = 2;
+        //余额支付
+        public static final Integer BalancePay = 0;
+    }
     /**
      * Service层
      */

@@ -28,9 +28,9 @@ public class AliPayConfig {
 
 
     //支付宝服务器异步通知页面路径,付款完毕后会异步调用本项目的方法,必须为公网地址
-    public final static String NOTIFY_URL = "/ali/alipayNotifyNotice";
+    public final static String NOTIFY_URL = "http://localhost:8088/ali/return_url";
     //支付宝同步通知路径,也就是当付款完毕后跳转本项目的页面,可以不是公网地址
-    public final static String RETURN_URL = "/ali/return_url";
+    public final static String RETURN_URL = "http://localhost:8088/ali/pay_success";
 
 	// 签名方式
 	public static String sign_type = "RSA2";

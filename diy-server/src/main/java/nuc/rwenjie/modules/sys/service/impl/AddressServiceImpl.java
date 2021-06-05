@@ -136,5 +136,19 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEntity
         return addressMapper.deleteById(aid);
     }
 
+    /**
+     * 获得用户的默认地址
+     *
+     * @param uid
+     * @return nuc.rwenjie.modules.sys.entity.AddressEntity
+     * @param: uid
+     */
+    @Override
+    public AddressEntity getDefaultOrder(String uid) {
+        return addressMapper.selectOne(new QueryWrapper<AddressEntity>()
+                .eq("default_addr", "1")
+                .eq("user_id", uid));
+    }
+
 
 }
