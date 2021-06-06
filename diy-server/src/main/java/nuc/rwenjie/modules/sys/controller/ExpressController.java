@@ -8,10 +8,22 @@ import nuc.rwenjie.common.utils.kuaidi100.BaseServiceTest;
 import nuc.rwenjie.common.utils.kuaidi100.pojo.ExpressRequest;
 import nuc.rwenjie.common.utils.kuaidi100.pojo.ExpressResponse;
 import nuc.rwenjie.common.utils.kuaidi100.service.ExpressService;
+import nuc.rwenjie.modules.sys.controller.vo.OrderVO;
+import nuc.rwenjie.modules.sys.entity.AddressEntity;
+import nuc.rwenjie.modules.sys.entity.ExpressEntity;
+import nuc.rwenjie.modules.sys.entity.OrderEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
+import nuc.rwenjie.modules.sys.service.IAddressService;
+import nuc.rwenjie.modules.sys.service.IAreaService;
+import nuc.rwenjie.modules.sys.service.IExpressService;
+import nuc.rwenjie.modules.sys.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Author Rwenjie
@@ -31,18 +43,38 @@ public class ExpressController {
     @Autowired
     ExpressService expressService;
 
+    @Autowired
+    IExpressService iExpressService;
+
+    @Autowired
+    IOrderService orderService;
+
+    @Autowired
+    IAreaService areaService;
+    @Autowired
+    IAddressService addressService;
+
 
     @ApiOperation(value = "查询快递")
     @GetMapping("/detail")
-    public RespBean findExpress() {
+    public RespBean findExpress(String orderId) {
         System.out.println("查询快递");
 
+        OrderVO orderVO = orderService.getOrderByOid(orderId);
+        System.out.println(orderId);
+        System.out.println(orderVO);
         ExpressRequest exprRequest = new ExpressRequest();
         exprRequest.setCom(CompanyConstant.YD);
-        exprRequest.setNum("4311159956248");
-        exprRequest.setFrom("河北保定市");
-        exprRequest.setPhone("17725390266");
-        exprRequest.setTo("湖南岳阳市");
+        System.out.println("num" + orderVO.getOrder().getExpressNum());
+        exprRequest.setNum(orderVO.getOrder().getExpressNum());
+
+        System.out.println("from" + areaService.getAreaById(Integer.valueOf(orderVO.getOrder().getAddressFrom())).getName());
+        exprRequest.setFrom(areaService.getAreaById(Integer.valueOf(orderVO.getOrder().getAddressFrom())).getName());
+        AddressEntity addressEntity = addressService.getAddrById(orderVO.getOrder().getAddressTo());
+        System.out.println("tell+" + addressEntity.getTel());
+        exprRequest.setPhone(addressEntity.getTel());
+        System.out.println("to" + areaService.getAreaById(addressEntity.getCity()).getName());
+        exprRequest.setTo(areaService.getAreaById(addressEntity.getCity()).getName());
 
         ExpressResponse exprResponse = expressService.queryMapView(exprRequest);
 
@@ -50,9 +82,30 @@ public class ExpressController {
 
 
         // exprRequest.setTo(queryTrackMapResp.get);
-
-
-
         return RespBean.success("获得成功",exprResponse);
+    }
+
+    @ApiOperation(value = "查询快递")
+    @GetMapping("/company")
+    public RespBean getAllExpressCom(Authentication authentication) {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        if (userModel==null) {
+            return RespBean.error(401, "用户未登录");
+        }
+        List<ExpressEntity> entityList = iExpressService.getAllExpressCom();
+
+        return RespBean.success(entityList);
+    }
+
+    @ApiOperation(value = "查询快递")
+    @GetMapping("/eid")
+    public RespBean getExpressComById(String eid, String num,  Authentication authentication) {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        if (userModel==null) {
+            return RespBean.error(401, "用户未登录");
+        }
+        ExpressEntity entityList = iExpressService.getExpressComById(eid);
+
+        return RespBean.success(entityList);
     }
 }

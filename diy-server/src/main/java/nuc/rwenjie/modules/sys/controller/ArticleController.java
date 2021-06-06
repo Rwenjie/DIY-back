@@ -92,7 +92,6 @@ public class ArticleController {
             return RespBean.error("请进行登录");
         }
         List<ArticleEntity> articles = articleService.getArticleByUser(userModel);
-        System.out.println(articles);
         return RespBean.success(articles);
     }
 
@@ -105,6 +104,17 @@ public class ArticleController {
         }
        List<ArticleEntity> articles = articleService.publicGoodArticle(userModel);
         System.out.println(articles);
+        return RespBean.success(articles);
+    }
+
+    @ApiOperation(value = "查询点赞的文章")
+    @GetMapping("/star")
+    public RespBean getStarArticle(Authentication authentication) {
+        UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        if (userModel==null) {
+            return RespBean.error("请进行登录");
+        }
+        List<ArticleEntity> articles = articleService.getStarArticle(userModel);
         return RespBean.success(articles);
     }
 }

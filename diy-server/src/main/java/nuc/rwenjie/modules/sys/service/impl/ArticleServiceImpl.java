@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import nuc.rwenjie.modules.sys.entity.ArticleEntity;
+import nuc.rwenjie.modules.sys.entity.ArticleStarEntity;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
 import nuc.rwenjie.modules.sys.service.IArticleService;
@@ -11,6 +12,7 @@ import nuc.rwenjie.modules.sys.service.IArticleStarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -128,5 +130,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
     public List<ArticleEntity> getArticleByUser(UserEntity userModel) {
         return articleMapper.selectList(new QueryWrapper<ArticleEntity>()
                 .eq("user_id", userModel.getUserId()));
+    }
+
+    /**
+     * 查询用户关注的文章
+     *
+     * @param userModel 用户
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
+     **/
+    @Override
+    public List<ArticleEntity> getStarArticle(UserEntity userModel) {
+        List<ArticleStarEntity> starArticleList = articleStarService.getStarArticle(userModel);
+        List<ArticleEntity> articleEntities = new ArrayList<>();
+        starArticleList.forEach(item -> {
+            ArticleEntity articleEntity = articleMapper.selectById(item.getAid());
+            articleEntities.add(articleEntity);
+        });
+        return articleEntities;
     }
 }

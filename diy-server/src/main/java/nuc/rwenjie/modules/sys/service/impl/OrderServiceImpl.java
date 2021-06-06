@@ -70,9 +70,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         AddressEntity address = addressService.getDefaultOrder(user.getUserId());
         OrderEntity order = new OrderEntity();
         String oid = generateId.generateOrderId();
+        String addressFrom = "";
         //插入订单表数据
         order.setId(oid);
-        order.setAddressId(address.getId());
+        order.setAddressTo(address.getId().toString());
         order.setBuyerId(user.getUserId());
         order.setOrderStatus(1);
         order.setSellerId(sellId);
@@ -102,6 +103,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         order.setProductAmountTotal(a1);
         order.setUpdatedTime(Time.NowTime());
         orderMapper.updateById(order);
+
+        for (Long aLong : cartId) {
+            cartService.deleteCart(aLong.toString());
+        }
+
 
         return order.getId();
     }
@@ -172,6 +178,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     }
 
     /**
+     * 根据用户查询售出订单
+     *
+     * @param user 用户
+     * @return java.util.List<nuc.rwenjie.modules.sys.controller.vo.OrderVO>
+     **/
+    @Override
+    public List<OrderVO> getSellOrderByUser(UserEntity user) {
+        List<OrderEntity> orderList = orderMapper.selectList(new QueryWrapper<OrderEntity>()
+                .eq("seller_id", user.getUserId()));
+        List<OrderVO> orderVOS = new ArrayList<>();
+        orderList.forEach( orderEntity -> {
+            OrderVO orderVO = new OrderVO();
+            orderVO.setOrder(orderEntity);
+            List<OrderDetailModel> detailModels = getOrderDetailByOrder(orderEntity);
+            orderVO.setOrderDetailList(detailModels);
+            orderVOS.add(orderVO);
+        });
+        return orderVOS;
+    }
+
+    /**
      * 根据id查询
      *
      * @param oid
@@ -181,7 +208,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     public OrderVO getOrderByOid(String oid) {
         OrderVO orderVO = new OrderVO();
         OrderEntity orderEntity = orderMapper.selectById(oid);
-        System.out.println("+++++++++++++++++++++++++"+oid+"+++++++++++++++++++++++++++++++++++++++++++++++"+orderEntity);
         orderVO.setOrder(orderEntity);
         orderVO.setOrderDetailList(getOrderDetailByOrder(orderEntity));
         return orderVO;
@@ -198,7 +224,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     public int updateDeliveryAddr(Long aid, String oid) {
         OrderEntity orderEntity = orderMapper.selectById(oid);
         if (orderEntity!=null) {
-            orderEntity.setAddressId(aid);
+            orderEntity.setAddressTo(aid.toString());
             orderEntity.setUpdatedTime(Time.NowTime());
             return orderMapper.updateById(orderEntity);
         }
@@ -224,6 +250,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         // 支付时间
         orderEntity.setPayTime(Time.NowTime());
         orderEntity.setUpdatedTime(Time.NowTime());
+        return orderMapper.updateById(orderEntity);
+    }
+
+    /**
+     *
+     * @param oid 订单号
+     * @param num 快递单号
+     * @param eid 快递公司
+     * @param addressFrom 发货地址
+     * @return int
+     **/
+    @Override
+    public int confirmDelivery(String eid, String num, String oid, String addressFrom) {
+        System.out.println("=================>"+eid + num + oid);
+        OrderEntity orderEntity = orderMapper.selectById(oid);
+        orderEntity.setExpressId(eid);
+        orderEntity.setExpressNum(num);
+        orderEntity.setDeliveryTime(Time.NowTime());
+        orderEntity.setOrderStatus(3);
+        orderEntity.setAddressFrom(addressFrom);
         return orderMapper.updateById(orderEntity);
     }
 

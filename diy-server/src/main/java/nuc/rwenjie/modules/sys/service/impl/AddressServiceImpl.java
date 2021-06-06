@@ -150,5 +150,16 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEntity
                 .eq("user_id", uid));
     }
 
+    /**
+     * 根据id 获得
+     *
+     * @param aid id
+     * @return java.lang.String
+     **/
+    @Override
+    public AddressEntity getAddrById(String aid) {
+        return addressMapper.selectById(aid);
+    }
+
 
 }

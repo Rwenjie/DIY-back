@@ -26,10 +26,12 @@ public class ArticleStarController extends BaseController{
     @Autowired
     IArticleStarService articleStarService;
 
-    @GetMapping("/ren/state")
-    @ApiOperation(value = "用户是否点赞了")
-    public RespBean getStarState(String aid, Authentication authentication) {
+    @ApiOperation(value = "查询用户是否给文章点赞了")
+    @GetMapping("/state")
+    public RespBean  getStarState(String aid, Authentication authentication) {
+        System.out.println(aid);
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        System.out.println(userModel);
         if (userModel == null) {
             return RespBean.error(210, "", false);
         }
@@ -46,6 +48,7 @@ public class ArticleStarController extends BaseController{
     public RespBean giveStar(@RequestBody String aid, Authentication authentication) {
         System.out.println(aid);
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
+        System.out.println(userModel);
         if (userModel == null) {
             return RespBean.error("请登录");
         }

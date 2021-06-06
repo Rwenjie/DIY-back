@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.rwenjie.modules.sys.mapper.ChatFriendMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="nuc.rwenjie.modules.sys.dataobject.ChatFriend">
+        <result column="mid" property="mid" />
+        <result column="fid" property="fid" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        mid, fid, create_time
+    </sql>
+
+</mapper>

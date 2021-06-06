@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/tags/ren/**",
                 "/goods/ren/**",
                 "/item/ren/**",
+                "/user/ren/**",
                 "/comment/selCommentReviewer",
                 "/ali/alipayReturnNotice"
         );

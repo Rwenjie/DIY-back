@@ -57,4 +57,11 @@ public interface IAddressService extends IService<AddressEntity> {
      * @return nuc.rwenjie.modules.sys.entity.AddressEntity
      **/
     AddressEntity getDefaultOrder(String uid);
+
+    /**
+     * 根据id 获得
+     * @param aid id
+     * @return java.lang.String
+     **/
+    AddressEntity getAddrById(String aid);
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.rwenjie.modules.sys.mapper.ExpressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="nuc.rwenjie.modules.sys.dataobject.Express">
+        <id column="id" property="id" />
+        <result column="express_code" property="expressCode" />
+        <result column="express_type" property="expressType" />
+        <result column="express_name" property="expressName" />
+        <result column="is_used" property="isUsed" />
+        <result column="sort_no" property="sortNo" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, express_code, express_type, express_name, is_used, sort_no, create_time
+    </sql>
+
+</mapper>

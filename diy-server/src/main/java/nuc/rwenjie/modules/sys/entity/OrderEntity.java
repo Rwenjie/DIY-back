@@ -49,8 +49,11 @@ public class OrderEntity implements Serializable {
     @ApiModelProperty(value = "运费金额")
     private BigDecimal logisticsFee;
 
+    @ApiModelProperty(value = "发货地址编码")
+    private String addressFrom;
+
     @ApiModelProperty(value = "收货地址编码")
-    private Long addressId;
+    private String addressTo;
 
     @ApiModelProperty(value = "支付渠道 0余额 1微信 2支付宝")
     private Integer payChannel;
@@ -67,8 +70,11 @@ public class OrderEntity implements Serializable {
     @ApiModelProperty(value = "发货时间")
     private String deliveryTime;
 
-    @ApiModelProperty(value = "快递单号")
+    @ApiModelProperty(value = "快递公司信息")
     private String expressId;
+
+    @ApiModelProperty(value = "快递单号")
+    private String expressNum;
 
     @ApiModelProperty(value = "订单结算状态 0未结算 1已结算")
     private Integer orderSettlementStatus;

@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import nuc.rwenjie.common.utils.Time;
 import nuc.rwenjie.modules.sys.entity.ArticleStarEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
 import nuc.rwenjie.modules.sys.mapper.ArticleMapper;
 import nuc.rwenjie.modules.sys.mapper.ArticleStarMapper;
 import nuc.rwenjie.modules.sys.service.IArticleService;
 import nuc.rwenjie.modules.sys.service.IArticleStarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author Rwenjie
@@ -100,5 +103,16 @@ public class ArticleStarServiceImpl extends ServiceImpl<ArticleStarMapper, Artic
         int count = articleStarMapper.selectCount(new QueryWrapper<ArticleStarEntity>()
                 .eq("aid", aid));
         return count;
+    }
+
+    /**
+     * 查询用户点赞了的文章
+     *
+     * @param user
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleStarEntity>
+     **/
+    @Override
+    public List<ArticleStarEntity> getStarArticle(UserEntity user) {
+        return articleStarMapper.selectList(new QueryWrapper<ArticleStarEntity>().eq("uid", user.getUserId()));
     }
 }

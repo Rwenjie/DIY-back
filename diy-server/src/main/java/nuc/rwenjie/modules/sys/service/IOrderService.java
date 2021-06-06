@@ -39,6 +39,13 @@ public interface IOrderService extends IService<OrderEntity> {
      **/
     List<OrderVO> getOrderByUser(UserEntity user);
 
+    /**
+     * 根据用户查询售出订单
+     * @param user 用户
+     * @return java.util.List<nuc.rwenjie.modules.sys.controller.vo.OrderVO>
+     **/
+    List<OrderVO> getSellOrderByUser(UserEntity user);
+
 
     /**
      * 根据id查询
@@ -62,4 +69,17 @@ public interface IOrderService extends IService<OrderEntity> {
      * @return int 更新数据个数
      **/
     int updatePaySuccess(String oid, String outTradeNo, int payMethod);
+
+
+    /**
+     *
+     *
+     *
+     * @param oid 订单号
+     * @param num  快递单号
+     * @param eid 快递公司
+     * @param addressFrom 发货地址
+     * @return int
+     **/
+    int confirmDelivery(String eid, String num, String oid, String addressFrom);
 }

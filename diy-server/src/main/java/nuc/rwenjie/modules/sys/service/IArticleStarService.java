@@ -2,6 +2,9 @@ package nuc.rwenjie.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import nuc.rwenjie.modules.sys.entity.ArticleStarEntity;
+import nuc.rwenjie.modules.sys.entity.UserEntity;
+
+import java.util.List;
 
 /**
  * @Author Rwenjie
@@ -37,6 +40,7 @@ public interface IArticleStarService extends IService<ArticleStarEntity> {
      * @Param: aid
      * @return int
      **/
+
     int getStarState(String userId, String aid);
 
 
@@ -46,4 +50,11 @@ public interface IArticleStarService extends IService<ArticleStarEntity> {
      * @return int
      **/
     int getStarCount(String aid);
+
+    /**
+     * 查询用户点赞了的文章
+     * @param user
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleStarEntity>
+     **/
+    List<ArticleStarEntity> getStarArticle(UserEntity user);
 }

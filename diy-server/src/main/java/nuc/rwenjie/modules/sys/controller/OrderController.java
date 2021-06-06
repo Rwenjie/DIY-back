@@ -35,7 +35,7 @@ public class OrderController {
     @ApiOperation(value="在购物车创建新的订单")
     @PostMapping("/create/cart")
     public RespBean createOrderByCart(@RequestBody Long [] cartId, Authentication authentication) {
-        System.out.println("======================================="+cartId);
+        System.out.println("cartId======================================="+cartId);
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");
@@ -64,7 +64,7 @@ public class OrderController {
         }
     }
 
-    @ApiOperation(value="根据用户查询商品")
+    @ApiOperation(value="根据用户查询订单")
     @GetMapping("/user/all")
     public RespBean getOrderByUser(Authentication authentication) {
         System.out.println("user/all");
@@ -73,6 +73,18 @@ public class OrderController {
             return RespBean.error(401, "用户未登录");
         }
         List<OrderVO> orderVOS =  orderService.getOrderByUser(user);
+        return RespBean.success(orderVOS);
+    }
+
+    @ApiOperation(value="根据用户查询售出订单")
+    @GetMapping("/sell/all")
+    public RespBean getSellOrderByUser(Authentication authentication) {
+        System.out.println("user/all");
+        UserEntity user = (UserEntity)authentication.getPrincipal();
+        if (user==null) {
+            return RespBean.error(401, "用户未登录");
+        }
+        List<OrderVO> orderVOS =  orderService.getSellOrderByUser(user);
         return RespBean.success(orderVOS);
     }
 
@@ -90,7 +102,7 @@ public class OrderController {
     @ApiOperation(value = "更新配送地址")
     @GetMapping("/addr/aid")
     public RespBean updateDeliveryAddr(String aid, String oid, Authentication authentication) {
-        System.out.println("==============================================="+aid);
+        System.out.println("===更新配送地址============================================"+aid);
         UserEntity user = (UserEntity)authentication.getPrincipal();
         if (user==null) {
             return RespBean.error(401, "用户未登录");
@@ -101,7 +113,22 @@ public class OrderController {
         } else {
             return RespBean.success(200, "", null);
         }
+    }
 
+    @ApiOperation(value = "更新配送地址")
+    @GetMapping("/addr/eid")
+    public RespBean confirmDelivery(String eid, String num, String oid, String addressFrom, Authentication authentication) {
+
+        UserEntity user = (UserEntity)authentication.getPrincipal();
+        if (user==null) {
+            return RespBean.error(401, "用户未登录");
+        }
+        int row = orderService.confirmDelivery(eid, num, oid, addressFrom);
+        if (row == 0) {
+            return RespBean.error("更新发货信息失败");
+        } else {
+            return RespBean.success(200, "", null);
+        }
     }
 
 }

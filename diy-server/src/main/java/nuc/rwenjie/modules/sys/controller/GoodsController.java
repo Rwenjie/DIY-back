@@ -36,9 +36,7 @@ public class GoodsController {
     @ApiOperation("提交商品 商品发布")
     @PostMapping("/submit")
     public RespBean submit (@RequestBody GoodsEntity goods, Authentication authentication) {
-        System.out.println("++++++++++++++++++++++++++++++++++++"+goods);
         UserEntity userModel = (UserEntity) authentication.getPrincipal();
-
 
         return goodsService.insertGoods(goods, userModel.getUserId());
     }

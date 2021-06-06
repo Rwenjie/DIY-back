@@ -63,4 +63,11 @@ public interface IArticleService extends IService<ArticleEntity> {
      * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
      **/
     List<ArticleEntity> getArticleByUser(UserEntity userModel);
+
+    /**
+     * 查询用户关注的文章
+     * @param userModel 用户
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.ArticleEntity>
+     **/
+    List<ArticleEntity> getStarArticle(UserEntity userModel);
 }

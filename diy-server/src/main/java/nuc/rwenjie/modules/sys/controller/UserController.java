@@ -39,6 +39,7 @@ public class UserController extends BaseController{
         UserEntity userEntity = userService.getUserById(userModel.getUserId());
         if (userEntity != null ) {
             userEntity.setPassword("");
+            userEntity.setSalt("");
             return RespBean.success(userEntity);
         } else {
             return RespBean.error("获取用户信息失败");
@@ -51,6 +52,19 @@ public class UserController extends BaseController{
         System.out.println("<=======>user"+user.toString());
         UserEntity userEntity = userService.updateUserInfo(user);
         return RespBean.success("更新成功",userEntity);
+    }
+
+    @ApiOperation(value = "查询文章作者")
+    @GetMapping("/ren/article")
+    public RespBean getUserByArticle(String article) throws BusinessException {
+        UserEntity userEntity = userService.getUserById(article);
+        if (userEntity != null ) {
+            userEntity.setPassword("");
+            userEntity.setSalt("");
+            return RespBean.success(userEntity);
+        } else {
+            return RespBean.error("获取用户信息失败");
+        }
     }
 
 }

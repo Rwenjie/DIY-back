@@ -9,14 +9,19 @@ import nuc.rwenjie.common.config.security.DefaultUserDetailsService;
 import nuc.rwenjie.common.error.BusinessException;
 import nuc.rwenjie.common.error.EmBusinessError;
 import nuc.rwenjie.modules.sys.dataobject.UserDO;
+import nuc.rwenjie.modules.sys.entity.ChatFriendEntity;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
+import nuc.rwenjie.modules.sys.entity.UserFollowerEntity;
 import nuc.rwenjie.modules.sys.mapper.UserMapper;
+import nuc.rwenjie.modules.sys.service.IChatFriendService;
+import nuc.rwenjie.modules.sys.service.IUserFollowerService;
 import nuc.rwenjie.modules.sys.service.UserService;
 import nuc.rwenjie.modules.sys.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,6 +37,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    IUserFollowerService userFollowerService;
+
+    @Autowired
+    IChatFriendService chatFriendService;
 
     /**
      * 根据用户ID获得用户
@@ -113,6 +124,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     public List<UserEntity> getAllFriends(String keywords) {
         return userMapper.selectList(new QueryWrapper<UserEntity>());
+    }
+
+    /**
+     * 查找聊天对象
+     *
+     * @param keywords
+     * @return java.util.List<nuc.rwenjie.modules.sys.entity.UserEntity>
+     **/
+    @Override
+    public List<UserEntity> getChatFriends(String keywords, UserEntity userEntity) {
+        List<ChatFriendEntity> userFollowerEntities = chatFriendService.getChatFriend(userEntity);
+        List<UserEntity> userEntities = new ArrayList<>();
+        userFollowerEntities.forEach( item -> {
+           UserEntity fUser = userMapper.selectById(item.getFid());
+            userEntities.add(fUser);
+        });
+        return userEntities;
     }
 
     /**
