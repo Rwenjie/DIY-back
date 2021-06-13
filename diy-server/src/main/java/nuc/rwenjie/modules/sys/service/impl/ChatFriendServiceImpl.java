@@ -38,9 +38,13 @@ public class ChatFriendServiceImpl extends ServiceImpl<ChatFriendMapper, ChatFri
     @Override
     public int addChatFriend(String userId, String fid) {
         ChatFriendEntity chatFriend = new ChatFriendEntity();
+        chatFriend.setFid(userId);
+        chatFriend.setMid(fid);
+        chatFriend.setCreateTime(Time.NowTime());
+        chatFriendMapper.insert(chatFriend);
         chatFriend.setFid(fid);
         chatFriend.setMid(userId);
-        chatFriend.setCreateTime(Time.NowTime());;
+        chatFriend.setCreateTime(Time.NowTime());
         return chatFriendMapper.insert(chatFriend);
     }
 

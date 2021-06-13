@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List<ChatFriendEntity> userFollowerEntities = chatFriendService.getChatFriend(userEntity);
         List<UserEntity> userEntities = new ArrayList<>();
         userFollowerEntities.forEach( item -> {
-           UserEntity fUser = userMapper.selectById(item.getFid());
+            UserEntity fUser = userMapper.selectById(item.getFid());
             userEntities.add(fUser);
         });
         return userEntities;

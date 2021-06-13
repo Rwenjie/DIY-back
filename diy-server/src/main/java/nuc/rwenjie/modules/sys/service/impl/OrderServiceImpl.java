@@ -71,6 +71,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         OrderEntity order = new OrderEntity();
         String oid = generateId.generateOrderId();
         String addressFrom = "";
+        AtomicReference<Float> amountTotal = new AtomicReference<>((float) 0);
+        BigDecimal a1 = new BigDecimal(String.valueOf(amountTotal));
         //插入订单表数据
         order.setId(oid);
         order.setAddressTo(address.getId().toString());
@@ -78,17 +80,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         order.setOrderStatus(1);
         order.setSellerId(sellId);
         order.setAfterStatus(0);
+        order.setProductAmountTotal(a1);
         order.setLogisticsFee(new BigDecimal("0.00"));
         order.setCreatedTime(Time.NowTime());
         orderMapper.insert(order);
         AtomicReference<Integer> rows = new AtomicReference<>(0);
-        AtomicReference<Float> amountTotal = new AtomicReference<>((float) 0);
+
         //插入订单详情表数据
         cartModels.forEach( cart -> {
             OrderDetailDO detailDO = new OrderDetailDO();
             DecimalFormat df1 = new DecimalFormat("0.00");
             String str = df1.format(cart.getSku().getPrice());
             amountTotal.updateAndGet(v -> (float) (v + Float.parseFloat(str) * cart.getCount()));
+            System.out.println("===================>amountTotal"+amountTotal);
             detailDO.setOrderId(order.getId());
             detailDO.setArticleId(cart.getArticleId());
             detailDO.setCount(cart.getCount());
@@ -99,7 +103,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             rows.updateAndGet(v -> v + detailMapper.insert(detailDO));
         });
         // 更新订单总金额
-        BigDecimal a1 = new BigDecimal(String.valueOf(amountTotal));
+
+        System.out.println(a1);
         order.setProductAmountTotal(a1);
         order.setUpdatedTime(Time.NowTime());
         orderMapper.updateById(order);

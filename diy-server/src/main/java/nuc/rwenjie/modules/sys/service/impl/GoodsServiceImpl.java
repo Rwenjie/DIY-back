@@ -314,13 +314,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, GoodsDO> implemen
         String[] images = goodsDO.getImages().split(",");
         List<String> list = Arrays.asList(images);
 
-        String[] afterService = goodsDO.getAfterService().split(",");
-        List<String> li = Arrays.asList(afterService);
 
         List<Map<String, String>> fromAddr = areaService.getRootAddr(Integer.valueOf(goodsDO.getFromAddr()));
 
         goodsModel.setFromAddr(fromAddr);
-        goodsModel.setAfterService(li);
         goodsModel.setImages(list);
 
         return goodsModel;

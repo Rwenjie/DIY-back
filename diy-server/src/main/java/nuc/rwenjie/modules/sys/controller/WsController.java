@@ -2,6 +2,7 @@ package nuc.rwenjie.modules.sys.controller;
 
 import nuc.rwenjie.modules.sys.entity.ChatMsg;
 import nuc.rwenjie.modules.sys.entity.UserEntity;
+import nuc.rwenjie.modules.sys.service.IChatFriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,6 +23,8 @@ import java.time.LocalDateTime;
 @Controller
 public class WsController {
 
+    @Autowired
+    IChatFriendService chatFriendService;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
